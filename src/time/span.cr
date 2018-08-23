@@ -53,18 +53,18 @@ struct Time::Span
   # @nanoseconds can either be negative or positive).
   @nanoseconds : Int32
 
-  def self.new(hours : Int, minutes : Int, seconds : Int)
+  def self.new(hours : Int32, minutes : Int32, seconds : Int32)
     new(0, hours, minutes, seconds)
   end
 
-  def self.new(days : Int, hours : Int, minutes : Int, seconds : Int, nanoseconds : Int = 0)
+  def self.new(days : Int32, hours : Int32, minutes : Int32, seconds : Int32, nanoseconds : Int32 = 0)
     new(
       seconds: compute_seconds!(days, hours, minutes, seconds),
       nanoseconds: nanoseconds.to_i64,
     )
   end
 
-  def initialize(*, seconds : Int, nanoseconds : Int)
+  def initialize(*, seconds : Int32, nanoseconds : Int32)
     # Normalize nanoseconds in the range 0...1_000_000_000
     seconds += nanoseconds.tdiv(NANOSECONDS_PER_SECOND)
     nanoseconds = nanoseconds.remainder(NANOSECONDS_PER_SECOND)
@@ -84,7 +84,7 @@ struct Time::Span
     @nanoseconds = nanoseconds.to_i32
   end
 
-  def self.new(*, nanoseconds : Int)
+  def self.new(*, nanoseconds : Int32)
     new(
       seconds: nanoseconds.to_i64.tdiv(NANOSECONDS_PER_SECOND),
       nanoseconds: nanoseconds.to_i64.remainder(NANOSECONDS_PER_SECOND),
@@ -296,7 +296,7 @@ struct Time::Span
   end
 
   # Returns a `Time::Span` that is *number* times longer.
-  def *(number : Int) : Time::Span
+  def *(number : Int32) : Time::Span
     # TODO check overflow
     Span.new(
       seconds: to_i * number,
@@ -310,7 +310,7 @@ struct Time::Span
   end
 
   # Returns a `Time::Span` that is divided by *number*.
-  def /(number : Int) : Time::Span
+  def /(number : Int32) : Time::Span
     seconds = to_i.tdiv(number)
     nanoseconds = self.nanoseconds.tdiv(number)
 
@@ -536,7 +536,7 @@ struct Time::MonthSpan
   # The number of months.
   getter value : Int64
 
-  def initialize(value : Int)
+  def initialize(value : Int32)
     @value = value.to_i64
   end
 

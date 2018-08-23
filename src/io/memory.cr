@@ -21,7 +21,7 @@ class IO::Memory < IO
   # io.read(slice) # => 0
   # slice          # => Bytes[0]
   # ```
-  def initialize(capacity : Int = 64)
+  def initialize(capacity : Int32 = 64)
     String.check_capacity_in_bounds(capacity)
 
     @buffer = GC.malloc_atomic(capacity.to_u32).as(UInt8*)

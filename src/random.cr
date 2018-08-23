@@ -108,7 +108,7 @@ module Random
   # Random.new.rand(10)   # => 5
   # Random.new.rand(5000) # => 2243
   # ```
-  def rand(max : Int) : Int
+  def rand(max : Int32) : Int32
     rand_int(max)
   end
 
@@ -269,7 +269,7 @@ module Random
   # Random.new.rand(10..20)                 # => 14
   # Random.new.rand(Int64::MIN..Int64::MAX) # => -5297435808626736140
   # ```
-  def rand(range : Range(Int, Int)) : Int
+  def rand(range : Range(Int, Int)) : Int32
     rand_range(range)
   end
 
@@ -321,7 +321,7 @@ module Random
   # Random.new.random_bytes    # => [145, 255, 191, 133, 132, 139, 53, 136, 93, 238, 2, 37, 138, 244, 3, 216]
   # Random.new.random_bytes(4) # => [217, 118, 38, 196]
   # ```
-  def random_bytes(n : Int = 16) : Bytes
+  def random_bytes(n : Int32 = 16) : Bytes
     raise ArgumentError.new "Negative size: #{n}" if n < 0
     Bytes.new(n).tap { |buf| random_bytes(buf) }
   end
@@ -336,7 +336,7 @@ module Random
   #
   # It is recommended to use the secure `Random::Secure` as a source or another
   # cryptographically quality PRNG such as `Random::ISAAC` or ChaCha20.
-  def base64(n : Int = 16) : String
+  def base64(n : Int32 = 16) : String
     Base64.strict_encode(random_bytes(n))
   end
 
@@ -352,7 +352,7 @@ module Random
   #
   # It is recommended to use the secure `Random::Secure` as a source or another
   # cryptographically quality PRNG such as `Random::ISAAC` or ChaCha20.
-  def urlsafe_base64(n : Int = 16, padding = false) : String
+  def urlsafe_base64(n : Int32 = 16, padding = false) : String
     Base64.urlsafe_encode(random_bytes(n), padding)
   end
 
@@ -368,7 +368,7 @@ module Random
   #
   # It is recommended to use the secure `Random::Secure` as a source or another
   # cryptographically quality PRNG such as `Random::ISAAC` or ChaCha20.
-  def hex(n : Int = 16) : String
+  def hex(n : Int32 = 16) : String
     random_bytes(n).hexstring
   end
 

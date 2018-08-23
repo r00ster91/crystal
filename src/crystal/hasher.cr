@@ -131,7 +131,7 @@ struct Crystal::Hasher
     permute(value.remainder(HASH_MODULUS).to_u64)
   end
 
-  def int(value : Int)
+  def int(value : Int32)
     permute(value.remainder(HASH_MODULUS).to_i64.unsafe_as(UInt64))
   end
 

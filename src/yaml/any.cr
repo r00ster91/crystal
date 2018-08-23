@@ -77,7 +77,7 @@ struct YAML::Any
   # Assumes the underlying value is an `Array` or `Hash` and returns its size.
   #
   # Raises if the underlying value is not an `Array` or `Hash`.
-  def size : Int
+  def size : Int32
     case object = @raw
     when Array
       object.size

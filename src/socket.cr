@@ -103,7 +103,7 @@ class Socket < IO
   # sock = Socket.tcp(Socket::Family::INET)
   # sock.connect "crystal-lang.org", 80
   # ```
-  def connect(host : String, port : Int, connect_timeout = nil)
+  def connect(host : String, port : Int32, connect_timeout = nil)
     Addrinfo.resolve(host, port, @family, @type, @protocol) do |addrinfo|
       connect(addrinfo, timeout: connect_timeout) { |error| error }
     end
@@ -146,7 +146,7 @@ class Socket < IO
   # sock = Socket.tcp(Socket::Family::INET)
   # sock.bind "localhost", 1234
   # ```
-  def bind(host : String, port : Int)
+  def bind(host : String, port : Int32)
     Addrinfo.resolve(host, port, @family, @type, @protocol) do |addrinfo|
       bind(addrinfo) { |errno| errno }
     end
@@ -158,7 +158,7 @@ class Socket < IO
   # sock = Socket.tcp(Socket::Family::INET6)
   # sock.bind 1234
   # ```
-  def bind(port : Int)
+  def bind(port : Int32)
     Addrinfo.resolve("::", port, @family, @type, @protocol) do |addrinfo|
       bind(addrinfo) { |errno| errno }
     end
@@ -429,7 +429,7 @@ class Socket < IO
   # * `Int`: enable `SO_LINGER` and set timeout to `Int` seconds
   #   * `0`: abort on close (socket buffer is discarded and RST sent to peer). Depends on platform and whether `shutdown()` was called first.
   #   * `>=1`: abort after `Int` seconds on close. Linux and Cygwin may block on close.
-  def linger=(val : Int?)
+  def linger=(val : Int32?)
     v = LibC::Linger.new
     case val
     when Int

@@ -74,7 +74,7 @@ class Array(T)
   # ary = Array(Int32).new(5)
   # ary.size # => 0
   # ```
-  def initialize(initial_capacity : Int)
+  def initialize(initial_capacity : Int32)
     if initial_capacity < 0
       raise ArgumentError.new("Negative array size: #{initial_capacity}")
     end
@@ -98,7 +98,7 @@ class Array(T)
   # ary[0][0] = 2
   # ary # => [[2], [2], [2]]
   # ```
-  def initialize(size : Int, value : T)
+  def initialize(size : Int32, value : T)
     if size < 0
       raise ArgumentError.new("Negative array size: #{size}")
     end
@@ -124,7 +124,7 @@ class Array(T)
   # ary[0][0] = 2
   # ary # => [[2], [1], [1]]
   # ```
-  def self.new(size : Int, &block : Int32 -> T)
+  def self.new(size : Int32, &block : Int32 -> T)
     Array(T).build(size) do |buffer|
       size.to_i.times do |i|
         buffer[i] = yield i
@@ -144,7 +144,7 @@ class Array(T)
   #   LibSome.fill_buffer_and_return_number_of_elements_filled(buffer)
   # end
   # ```
-  def self.build(capacity : Int) : self
+  def self.build(capacity : Int32) : self
     ary = Array(T).new(capacity)
     ary.size = (yield ary.to_unsafe).to_i
     ary
@@ -285,7 +285,7 @@ class Array(T)
   # ```
   # ["a", "b", "c"] * 2 # => [ "a", "b", "c", "a", "b", "c" ]
   # ```
-  def *(times : Int)
+  def *(times : Int32)
     ary = Array(T).new(size * times)
     times.times do
       ary.concat(self)
@@ -316,7 +316,7 @@ class Array(T)
   # ary[3] = 5 # raises IndexError
   # ```
   @[AlwaysInline]
-  def []=(index : Int, value : T)
+  def []=(index : Int32, value : T)
     index = check_index_out_of_bounds index
     @buffer[index] = value
   end
@@ -338,7 +338,7 @@ class Array(T)
   # a[1, 0] = 6
   # a # => [1, 6, 2, 3, 4, 5]
   # ```
-  def []=(index : Int, count : Int, value : T)
+  def []=(index : Int32, count : Int32, value : T)
     raise ArgumentError.new "Negative count: #{count}" if count < 0
 
     index = check_index_out_of_bounds index
@@ -390,7 +390,7 @@ class Array(T)
   # a[1, 3] = [6, 7, 8, 9, 10]
   # a # => [1, 6, 7, 8, 9, 10, 5]
   # ```
-  def []=(index : Int, count : Int, values : Array(T))
+  def []=(index : Int32, count : Int32, values : Array(T))
     raise ArgumentError.new "Negative count: #{count}" if count < 0
 
     index = check_index_out_of_bounds index
@@ -473,7 +473,7 @@ class Array(T)
   # a[1, 2]  # => ["b", "c"]
   # a[5, 1]  # => []
   # ```
-  def [](start : Int, count : Int)
+  def [](start : Int32, count : Int32)
     raise ArgumentError.new "Negative count: #{count}" if count < 0
 
     if start == size
@@ -496,7 +496,7 @@ class Array(T)
   end
 
   @[AlwaysInline]
-  def unsafe_at(index : Int)
+  def unsafe_at(index : Int32)
     @buffer[index]
   end
 
@@ -620,7 +620,7 @@ class Array(T)
   # a               # => ["ant", "bat", "dog"]
   # a.delete_at(99) # raises IndexError
   # ```
-  def delete_at(index : Int)
+  def delete_at(index : Int32)
     index = check_index_out_of_bounds index
 
     elem = @buffer[index]
@@ -656,7 +656,7 @@ class Array(T)
   # a                  # => ["ant", "dog"]
   # a.delete_at(99, 1) # raises IndexError
   # ```
-  def delete_at(index : Int, count : Int)
+  def delete_at(index : Int32, count : Int32)
     val = self[index, count]
     count = index + count <= size ? count : size - index
     (@buffer + index).move_from(@buffer + index + count, size - index - count)
@@ -712,7 +712,7 @@ class Array(T)
   # a = [1, 2, 3, 4]
   # a.fill(2) { |i| i * i } # => [1, 2, 4, 9]
   # ```
-  def fill(from : Int)
+  def fill(from : Int32)
     from += size if from < 0
 
     raise IndexError.new unless 0 <= from < size
@@ -735,7 +735,7 @@ class Array(T)
   # a = [1, 2, 3, 4, 5, 6]
   # a.fill(2, 2) { |i| i * i } # => [1, 2, 4, 9, 5, 6]
   # ```
-  def fill(from : Int, count : Int)
+  def fill(from : Int32, count : Int32)
     return self if count <= 0
 
     from += size if from < 0
@@ -778,7 +778,7 @@ class Array(T)
   # a = [1, 2, 3, 4, 5]
   # a.fill(9, 2) # => [1, 2, 9, 9, 9]
   # ```
-  def fill(value : T, from : Int)
+  def fill(value : T, from : Int32)
     fill(from) { value }
   end
 
@@ -791,7 +791,7 @@ class Array(T)
   # a = [1, 2, 3, 4, 5]
   # a.fill(9, 2, 2) # => [1, 2, 9, 9, 5]
   # ```
-  def fill(value : T, from : Int, count : Int)
+  def fill(value : T, from : Int32, count : Int32)
     fill(from, count) { value }
   end
 
@@ -813,7 +813,7 @@ class Array(T)
   # [1, 2, 3].first(2) # => [1, 2]
   # [1, 2, 3].first(4) # => [1, 2, 3]
   # ```
-  def first(n : Int)
+  def first(n : Int32)
     self[0, n]
   end
 
@@ -828,7 +828,7 @@ class Array(T)
   # a.insert(2, "y")  # => ["x", "a", "y", "b", "c"]
   # a.insert(-1, "z") # => ["x", "a", "y", "b", "c", "z"]
   # ```
-  def insert(index : Int, object : T)
+  def insert(index : Int32, object : T)
     check_needs_resize
 
     if index < 0
@@ -856,7 +856,7 @@ class Array(T)
   # [1, 2, 3].last(2) # => [2, 3]
   # [1, 2, 3].last(4) # => [1, 2, 3]
   # ```
-  def last(n : Int)
+  def last(n : Int32)
     if n < @size
       self[@size - n, n]
     else
@@ -865,7 +865,7 @@ class Array(T)
   end
 
   # :nodoc:
-  protected def size=(size : Int)
+  protected def size=(size : Int32)
     @size = size.to_i
   end
 
@@ -957,7 +957,7 @@ class Array(T)
   # a.permutations(0) # => [[]]
   # a.permutations(4) # => []
   # ```
-  def permutations(size : Int = self.size)
+  def permutations(size : Int32 = self.size)
     ary = [] of Array(T)
     each_permutation(size) do |a|
       ary << a
@@ -980,7 +980,7 @@ class Array(T)
   # the method will create a new array and reuse it. This can be
   # used to prevent many memory allocations when each slice of
   # interest is to be used in a read-only fashion.
-  def each_permutation(size : Int = self.size, reuse = false) : Nil
+  def each_permutation(size : Int32 = self.size, reuse = false) : Nil
     n = self.size
     return if size > n
 
@@ -1033,13 +1033,13 @@ class Array(T)
   # the method will create a new array and reuse it. This can be
   # used to prevent many memory allocations when each slice of
   # interest is to be used in a read-only fashion.
-  def each_permutation(size : Int = self.size, reuse = false)
+  def each_permutation(size : Int32 = self.size, reuse = false)
     raise ArgumentError.new("Size must be positive") if size < 0
 
     PermutationIterator.new(self, size.to_i, reuse)
   end
 
-  def combinations(size : Int = self.size)
+  def combinations(size : Int32 = self.size)
     ary = [] of Array(T)
     each_combination(size) do |a|
       ary << a
@@ -1047,7 +1047,7 @@ class Array(T)
     ary
   end
 
-  def each_combination(size : Int = self.size, reuse = false) : Nil
+  def each_combination(size : Int32 = self.size, reuse = false) : Nil
     n = self.size
     return if size > n
     raise ArgumentError.new("Size must be positive") if size < 0
@@ -1095,7 +1095,7 @@ class Array(T)
     end
   end
 
-  def each_combination(size : Int = self.size, reuse = false)
+  def each_combination(size : Int32 = self.size, reuse = false)
     raise ArgumentError.new("Size must be positive") if size < 0
 
     CombinationIterator.new(self, size.to_i, reuse)
@@ -1127,7 +1127,7 @@ class Array(T)
     FlattenHelper(typeof(FlattenHelper.element_type(self))).flatten(self)
   end
 
-  def repeated_combinations(size : Int = self.size)
+  def repeated_combinations(size : Int32 = self.size)
     ary = [] of Array(T)
     each_repeated_combination(size) do |a|
       ary << a
@@ -1135,7 +1135,7 @@ class Array(T)
     ary
   end
 
-  def each_repeated_combination(size : Int = self.size, reuse = false) : Nil
+  def each_repeated_combination(size : Int32 = self.size, reuse = false) : Nil
     n = self.size
     return if size > n && n == 0
     raise ArgumentError.new("Size must be positive") if size < 0
@@ -1169,7 +1169,7 @@ class Array(T)
     end
   end
 
-  def each_repeated_combination(size : Int = self.size, reuse = false)
+  def each_repeated_combination(size : Int32 = self.size, reuse = false)
     raise ArgumentError.new("Size must be positive") if size < 0
 
     RepeatedCombinationIterator.new(self, size.to_i, reuse)
@@ -1228,7 +1228,7 @@ class Array(T)
     end
   end
 
-  def repeated_permutations(size : Int = self.size)
+  def repeated_permutations(size : Int32 = self.size)
     ary = [] of Array(T)
     each_repeated_permutation(size) do |a|
       ary << a
@@ -1236,7 +1236,7 @@ class Array(T)
     ary
   end
 
-  def each_repeated_permutation(size : Int = self.size, reuse = false) : Nil
+  def each_repeated_permutation(size : Int32 = self.size, reuse = false) : Nil
     n = self.size
     return if size != 0 && n == 0
     raise ArgumentError.new("Size must be positive") if size < 0
@@ -1295,7 +1295,7 @@ class Array(T)
   # a.pop(4) # => ["a", "b", "c"]
   # a        # => []
   # ```
-  def pop(n : Int)
+  def pop(n : Int32)
     if n < 0
       raise ArgumentError.new("Can't pop negative count")
     end
@@ -1422,7 +1422,7 @@ class Array(T)
   # a.sample(2)                # => [2, 1]
   # a.sample(2, Random.new(1)) # => [1, 3]
   # ```
-  def sample(n : Int, random = Random::DEFAULT)
+  def sample(n : Int32, random = Random::DEFAULT)
     if n < 0
       raise ArgumentError.new("Can't get negative count sample")
     end
@@ -1491,7 +1491,7 @@ class Array(T)
   # a.shift(4) # => ["a", "b", "c"]
   # a          # => []
   # ```
-  def shift(n : Int)
+  def shift(n : Int32)
     if n < 0
       raise ArgumentError.new("Can't shift negative count")
     end
@@ -1812,7 +1812,7 @@ class Array(T)
     self
   end
 
-  def update(index : Int)
+  def update(index : Int32)
     index = check_index_out_of_bounds index
     @buffer[index] = yield @buffer[index]
   end
@@ -2044,7 +2044,7 @@ class Array(T)
   end
 
   # :nodoc:
-  def index(object, offset : Int = 0)
+  def index(object, offset : Int32 = 0)
     # Optimize for the case of looking for a byte in a byte slice
     if T.is_a?(UInt8.class) &&
        (object.is_a?(UInt8) || (object.is_a?(Int) && 0 <= object < 256))

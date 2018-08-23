@@ -23,7 +23,7 @@ class SemanticVersion
     end
   end
 
-  def initialize(@major : Int, @minor : Int, @patch : Int, prerelease : String | Prerelease | Nil = nil, @build : String? = nil)
+  def initialize(@major : Int32, @minor : Int32, @patch : Int32, prerelease : String | Prerelease | Nil = nil, @build : String? = nil)
     @prerelease = case prerelease
                   when Prerelease
                     prerelease

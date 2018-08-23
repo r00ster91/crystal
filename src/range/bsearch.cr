@@ -1,6 +1,6 @@
 {% for p in [64, 32] %}
   # Cast integer as floating number value with keeping binary structure.
-  private def int_as_float(i : Int{{ p }})
+  private def int_as_float(i : Int32{{ p }})
     # Integer uses two's complement to represent signed number, but
     # floating number value uses sign bit. This difference causes a
     # problem that it reproduce incorrect value when you sum positive
@@ -44,7 +44,7 @@
       .try{ |i| int_as_float i }
   end
 
-  private def bsearch_internal(from : Int{{ p }}, to : Int{{ p }}, exclusive)
+  private def bsearch_internal(from : Int32{{ p }}, to : Int32{{ p }}, exclusive)
     saved_to = to
     satisfied = nil
     while from < to

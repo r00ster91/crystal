@@ -260,7 +260,7 @@ module Enumerable(T)
   #
   # This can be used to prevent many memory allocations when each slice of
   # interest is to be used in a read-only fashion.
-  def each_cons(count : Int, reuse = false)
+  def each_cons(count : Int32, reuse = false)
     if reuse
       unless reuse.is_a?(Array)
         reuse = Array(T).new(count)
@@ -311,11 +311,11 @@ module Enumerable(T)
   #
   # This can be used to prevent many memory allocations when each slice of
   # interest is to be used in a read-only fashion.
-  def each_slice(count : Int, reuse = false)
+  def each_slice(count : Int32, reuse = false)
     each_slice_internal(count, Array(T), reuse) { |slice| yield slice }
   end
 
-  private def each_slice_internal(count : Int, type, reuse)
+  private def each_slice_internal(count : Int32, type, reuse)
     if reuse
       unless reuse.is_a?(Array)
         reuse = type.new(count)
@@ -486,7 +486,7 @@ module Enumerable(T)
   # [1, 2, 3].in_groups_of(2, 0) # => [[1, 2], [3, 0]]
   # [1, 2, 3].in_groups_of(2)    # => [[1, 2], [3, nil]]
   # ```
-  def in_groups_of(size : Int, filled_up_with : U = nil) forall U
+  def in_groups_of(size : Int32, filled_up_with : U = nil) forall U
     raise ArgumentError.new("Size must be positive") if size <= 0
 
     ary = Array(Array(T | U)).new
@@ -511,7 +511,7 @@ module Enumerable(T)
   #
   # This can be used to prevent many memory allocations when each slice of
   # interest is to be used in a read-only fashion.
-  def in_groups_of(size : Int, filled_up_with : U = nil, reuse = false, &block) forall U
+  def in_groups_of(size : Int32, filled_up_with : U = nil, reuse = false, &block) forall U
     raise ArgumentError.new("Size must be positive") if size <= 0
 
     each_slice_internal(size, Array(T | U), reuse) do |slice|
@@ -1067,7 +1067,7 @@ module Enumerable(T)
   # ```
   # [1, 2, 3, 4, 5, 6].skip(3) # => [4, 5, 6]
   # ```
-  def skip(count : Int)
+  def skip(count : Int32)
     raise ArgumentError.new("Attempt to skip negative size") if count < 0
 
     array = Array(T).new
@@ -1242,7 +1242,7 @@ module Enumerable(T)
   # If *count* is bigger than the number of elements in the collection,
   # returns as many as possible. This include the case of calling it over
   # an empty collection, in which case it returns an empty array.
-  def first(count : Int)
+  def first(count : Int32)
     raise ArgumentError.new("Attempt to take negative size") if count < 0
 
     ary = Array(T).new(count)

@@ -56,7 +56,7 @@ struct JSON::Any
 
   # Assumes the underlying value is an `Array` or `Hash` and returns its size.
   # Raises if the underlying value is not an `Array` or `Hash`.
-  def size : Int
+  def size : Int32
     case object = @raw
     when Array
       object.size
@@ -70,7 +70,7 @@ struct JSON::Any
   # Assumes the underlying value is an `Array` and returns the element
   # at the given index.
   # Raises if the underlying value is not an `Array`.
-  def [](index : Int) : JSON::Any
+  def [](index : Int32) : JSON::Any
     case object = @raw
     when Array
       object[index]
@@ -82,7 +82,7 @@ struct JSON::Any
   # Assumes the underlying value is an `Array` and returns the element
   # at the given index, or `nil` if out of bounds.
   # Raises if the underlying value is not an `Array`.
-  def []?(index : Int) : JSON::Any?
+  def []?(index : Int32) : JSON::Any?
     case object = @raw
     when Array
       object[index]?

@@ -54,7 +54,7 @@ class File
     OwnerRead    = 0o400
     OwnerAll     = 0o700
 
-    def self.new(int : Int)
+    def self.new(int : Int32)
       new(int.to_i16)
     end
 

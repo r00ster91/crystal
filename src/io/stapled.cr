@@ -37,7 +37,7 @@ class IO::Stapled < IO
   end
 
   # Gets a string from `reader`.
-  def gets(delimiter : Char, limit : Int, chomp = false) : String?
+  def gets(delimiter : Char, limit : Int32, chomp = false) : String?
     check_open
 
     @reader.gets(delimiter, limit, chomp)
@@ -51,7 +51,7 @@ class IO::Stapled < IO
   end
 
   # Skips `reader`.
-  def skip(bytes_count : Int) : Nil
+  def skip(bytes_count : Int32) : Nil
     check_open
 
     @reader.skip(bytes_count)

@@ -8,7 +8,7 @@ class String::Builder < IO
   getter capacity : Int32
   getter buffer : Pointer(UInt8)
 
-  def initialize(capacity : Int = 64)
+  def initialize(capacity : Int32 = 64)
     String.check_capacity_in_bounds(capacity)
 
     # Make sure to also be able to hold
@@ -22,7 +22,7 @@ class String::Builder < IO
     @finished = false
   end
 
-  def self.build(capacity : Int = 64) : String
+  def self.build(capacity : Int32 = 64) : String
     builder = new(capacity)
     yield builder
     builder.to_s
@@ -88,7 +88,7 @@ class String::Builder < IO
 
   # Moves the write pointer, and the resulting string bytesize,
   # by the given *amount*.
-  def back(amount : Int)
+  def back(amount : Int32)
     unless 0 <= amount <= @bytesize
       raise ArgumentError.new "Invalid back amount"
     end

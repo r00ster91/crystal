@@ -42,7 +42,7 @@ abstract class IO
       raise NotImplementedError.new("IO::Decoder#read_utf8")
     end
 
-    def gets(io, delimiter : UInt8, limit : Int, chomp)
+    def gets(io, delimiter : UInt8, limit : Int32, chomp)
       raise NotImplementedError.new("IO::Decoder#gets")
     end
 

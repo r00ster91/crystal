@@ -54,7 +54,7 @@ abstract class OAuth2::AccessToken
   # will be the string "[1,2,3]".
   property extra : Hash(String, String)?
 
-  def initialize(@access_token : String, expires_in : Int?, @refresh_token : String? = nil, @scope : String? = nil, @extra = nil)
+  def initialize(@access_token : String, expires_in : Int32?, @refresh_token : String? = nil, @scope : String? = nil, @extra = nil)
     @expires_in = expires_in.try &.to_i64
   end
 

@@ -114,7 +114,7 @@ struct StaticArray(T, N)
   end
 
   @[AlwaysInline]
-  def unsafe_at(index : Int)
+  def unsafe_at(index : Int32)
     to_unsafe[index]
   end
 
@@ -130,7 +130,7 @@ struct StaticArray(T, N)
   # array[4] = 4                                    # raises IndexError
   # ```
   @[AlwaysInline]
-  def []=(index : Int, value : T)
+  def []=(index : Int32, value : T)
     index = check_index_out_of_bounds index
     to_unsafe[index] = value
   end
@@ -145,7 +145,7 @@ struct StaticArray(T, N)
   # array                                           # => StaticArray[1, 4, 3]
   # array.update(5) { |x| x * 2 }                   # raises IndexError
   # ```
-  def update(index : Int)
+  def update(index : Int32)
     index = check_index_out_of_bounds index
     to_unsafe[index] = yield to_unsafe[index]
   end
@@ -283,7 +283,7 @@ struct StaticArray(T, N)
   end
 
   # :nodoc:
-  def index(object, offset : Int = 0)
+  def index(object, offset : Int32 = 0)
     # Optimize for the case of looking for a byte in a byte slice
     if T.is_a?(UInt8.class) &&
        (object.is_a?(UInt8) || (object.is_a?(Int) && 0 <= object < 256))

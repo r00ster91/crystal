@@ -252,7 +252,7 @@ class File < IO::FileDescriptor
   # File.chown("foo", gid: 100)                        # changes foo's gid
   # File.chown("foo", gid: 100, follow_symlinks: true) # changes baz's gid
   # ```
-  def self.chown(path, uid : Int = -1, gid : Int = -1, follow_symlinks = false)
+  def self.chown(path, uid : Int32 = -1, gid : Int32 = -1, follow_symlinks = false)
     Crystal::System::File.chown(path, uid, gid, follow_symlinks)
   end
 
@@ -268,7 +268,7 @@ class File < IO::FileDescriptor
   # File.chmod("foo", 0o700)
   # File.info("foo").permissions.value # => 0o700
   # ```
-  def self.chmod(path, permissions : Int | Permissions)
+  def self.chmod(path, permissions : Int32 | Permissions)
     Crystal::System::File.chmod(path, permissions)
   end
 

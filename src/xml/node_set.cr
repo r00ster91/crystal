@@ -8,7 +8,7 @@ struct XML::NodeSet
     new doc, LibXML.xmlXPathNodeSetCreate(nil)
   end
 
-  def [](index : Int)
+  def [](index : Int32)
     index += size if index < 0
 
     unless 0 <= index < size

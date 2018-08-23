@@ -66,7 +66,7 @@ struct BigFloat < Float
     LibGMP.mpf_init_set_d(out @mpf, num.to_f64)
   end
 
-  def initialize(num : Float, precision : Int)
+  def initialize(num : Float, precision : Int32)
     LibGMP.mpf_init2(out @mpf, precision.to_u64)
     LibGMP.mpf_set_d(self, num.to_f64)
   end
@@ -87,7 +87,7 @@ struct BigFloat < Float
     LibGMP.mpf_get_default_prec
   end
 
-  def self.default_precision=(prec : Int)
+  def self.default_precision=(prec : Int32)
     LibGMP.mpf_set_default_prec(prec.to_u64)
   end
 
@@ -138,7 +138,7 @@ struct BigFloat < Float
     end
   end
 
-  def **(other : Int)
+  def **(other : Int32)
     BigFloat.new { |mpf| LibGMP.mpf_pow_ui(mpf, self, other.to_u64) }
   end
 

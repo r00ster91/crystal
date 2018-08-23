@@ -23,7 +23,7 @@ module Indexable(T)
   # This method should only be directly invoked if you are absolutely
   # sure the index is in bounds, to avoid a bounds check for a small boost
   # of performance.
-  abstract def unsafe_at(index : Int)
+  abstract def unsafe_at(index : Int32)
 
   # Returns the element at the given *index*, if in bounds,
   # otherwise executes the given block and returns its value.
@@ -33,7 +33,7 @@ module Indexable(T)
   # a.at(0) { :baz } # => :foo
   # a.at(2) { :baz } # => :baz
   # ```
-  def at(index : Int)
+  def at(index : Int32)
     index = check_index_out_of_bounds(index) do
       return yield
     end
@@ -49,7 +49,7 @@ module Indexable(T)
   # a.at(2) # raises IndexError
   # ```
   @[AlwaysInline]
-  def at(index : Int)
+  def at(index : Int32)
     at(index) { raise IndexError.new }
   end
 
@@ -69,7 +69,7 @@ module Indexable(T)
   # ary[-4] # raises IndexError
   # ```
   @[AlwaysInline]
-  def [](index : Int)
+  def [](index : Int32)
     at(index)
   end
 
@@ -89,7 +89,7 @@ module Indexable(T)
   # ary[-4]? # nil
   # ```
   @[AlwaysInline]
-  def []?(index : Int)
+  def []?(index : Int32)
     at(index) { nil }
   end
 
@@ -184,7 +184,7 @@ module Indexable(T)
   # ```text
   # b -- c -- d --
   # ```
-  def each(*, start : Int, count : Int)
+  def each(*, start : Int32, count : Int32)
     each_index(start: start, count: count) do |i|
       yield unsafe_at(i)
     end
@@ -265,7 +265,7 @@ module Indexable(T)
   # ```text
   # 2 -- 3 --
   # ```
-  def each_index(*, start : Int, count : Int)
+  def each_index(*, start : Int32, count : Int32)
     raise ArgumentError.new "negative count: #{count}" if count < 0
 
     start += size if start < 0
@@ -377,7 +377,7 @@ module Indexable(T)
   # ```
   # [1, 2, 3, 1, 2, 3].index(2, offset: 2) # => 4
   # ```
-  def index(object, offset : Int = 0)
+  def index(object, offset : Int32 = 0)
     index(offset) { |e| e == object }
   end
 
@@ -388,7 +388,7 @@ module Indexable(T)
   # ```
   # [1, 2, 3, 1, 2, 3].index(offset: 2) { |x| x < 2 } # => 3
   # ```
-  def index(offset : Int = 0)
+  def index(offset : Int32 = 0)
     offset += size if offset < 0
     return nil if offset < 0
 
@@ -499,7 +499,7 @@ module Indexable(T)
   # ```
   # ["a", "b", "c", "d"].values_at(0, 2) # => {"a", "c"}
   # ```
-  def values_at(*indexes : Int)
+  def values_at(*indexes : Int32)
     indexes.map { |index| self[index] }
   end
 

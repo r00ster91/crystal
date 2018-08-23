@@ -39,7 +39,7 @@ class Deque(T)
   # deq = Deque(Int32).new(5)
   # deq.size # => 0
   # ```
-  def initialize(initial_capacity : Int)
+  def initialize(initial_capacity : Int32)
     if initial_capacity < 0
       raise ArgumentError.new("Negative deque capacity: #{initial_capacity}")
     end
@@ -58,7 +58,7 @@ class Deque(T)
   # ```
   # Deque.new(3, 'a') # => Deque{'a', 'a', 'a'}
   # ```
-  def initialize(size : Int, value : T)
+  def initialize(size : Int32, value : T)
     if size < 0
       raise ArgumentError.new("Negative deque size: #{size}")
     end
@@ -78,7 +78,7 @@ class Deque(T)
   # ```
   # Deque.new(3) { |i| (i + 1) ** 2 } # => Deque{1, 4, 9}
   # ```
-  def self.new(size : Int, &block : Int32 -> T)
+  def self.new(size : Int32, &block : Int32 -> T)
     if size < 0
       raise ArgumentError.new("Negative deque size: #{size}")
     end
@@ -138,7 +138,7 @@ class Deque(T)
   # Sets the given value at the given *index*.
   #
   # Raises `IndexError` if the deque had no previous value at the given *index*.
-  def []=(index : Int, value : T)
+  def []=(index : Int32, value : T)
     index += @size if index < 0
     unless 0 <= index < @size
       raise IndexError.new
@@ -148,7 +148,7 @@ class Deque(T)
     @buffer[index] = value
   end
 
-  def unsafe_at(index : Int)
+  def unsafe_at(index : Int32)
     index += @start
     index -= @capacity if index >= @capacity
     @buffer[index]
@@ -210,7 +210,7 @@ class Deque(T)
   # a.delete_at(1) # => 2
   # a              # => Deque{1, 3}
   # ```
-  def delete_at(index : Int)
+  def delete_at(index : Int32)
     if index < 0
       index += @size
     end
@@ -282,7 +282,7 @@ class Deque(T)
   # a = Deque{0, 1, 2}
   # a.insert(1, 7) # => Deque{0, 7, 1, 2}
   # ```
-  def insert(index : Int, value : T)
+  def insert(index : Int32, value : T)
     if index < 0
       index += @size + 1
     end
@@ -387,7 +387,7 @@ class Deque(T)
   end
 
   # Removes the last *n* (at most) items in the deque.
-  def pop(n : Int)
+  def pop(n : Int32)
     if n < 0
       raise ArgumentError.new("Can't pop negative count")
     end
@@ -415,7 +415,7 @@ class Deque(T)
   #
   # * For positive *n*, equivalent to `n.times { push(shift) }`.
   # * For negative *n*, equivalent to `(-n).times { unshift(pop) }`.
-  def rotate!(n : Int = 1)
+  def rotate!(n : Int32 = 1)
     return if @size <= 1
     if @size == @capacity
       @start = (@start + n) % @capacity
@@ -468,7 +468,7 @@ class Deque(T)
   end
 
   # Removes the first *n* (at most) items in the deque.
-  def shift(n : Int)
+  def shift(n : Int32)
     if n < 0
       raise ArgumentError.new("Can't shift negative count")
     end

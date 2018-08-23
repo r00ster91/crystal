@@ -122,7 +122,7 @@ struct Tuple
     {% end %}
   end
 
-  def unsafe_at(index : Int)
+  def unsafe_at(index : Int32)
     self[index]
   end
 
@@ -140,7 +140,7 @@ struct Tuple
   # i = 3
   # tuple[i] # raises IndexError
   # ```
-  def [](index : Int)
+  def [](index : Int32)
     at(index)
   end
 
@@ -151,7 +151,7 @@ struct Tuple
   # tuple[0]? # => 1
   # tuple[3]? # => nil
   # ```
-  def []?(index : Int)
+  def []?(index : Int32)
     at(index) { nil }
   end
 
@@ -162,7 +162,7 @@ struct Tuple
   # tuple.at(0) # => 1
   # tuple.at(3) # raises IndexError
   # ```
-  def at(index : Int)
+  def at(index : Int32)
     at(index) { raise IndexError.new }
   end
 
@@ -174,7 +174,7 @@ struct Tuple
   # tuple.at(0) { 10 } # => 1
   # tuple.at(3) { 10 } # => 10
   # ```
-  def at(index : Int)
+  def at(index : Int32)
     index += size if index < 0
     {% for i in 0...T.size %}
       return self[{{i}}] if {{i}} == index

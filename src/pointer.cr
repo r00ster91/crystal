@@ -77,7 +77,7 @@ struct Pointer(T)
   # ptr2 = ptr + 1
   # ptr2.address # => 1238
   # ```
-  def +(other : Int)
+  def +(other : Int32)
     self + other.to_i64
   end
 
@@ -91,7 +91,7 @@ struct Pointer(T)
   # ptr2 = ptr - 1
   # ptr2.address # => 1230
   # ```
-  def -(other : Int)
+  def -(other : Int32)
     self + (-other)
   end
 
@@ -147,12 +147,12 @@ struct Pointer(T)
   # ptr1[2] # => 3
   # ptr1[3] # => 4
   # ```
-  def copy_from(source : Pointer(T), count : Int)
+  def copy_from(source : Pointer(T), count : Int32)
     source.copy_to(self, count)
   end
 
   # :nodoc:
-  def copy_from(source : Pointer(NoReturn), count : Int)
+  def copy_from(source : Pointer(NoReturn), count : Int32)
     raise ArgumentError.new("Negative count") if count < 0
 
     # We need this overload for cases when we have a pointer to unreachable
@@ -178,7 +178,7 @@ struct Pointer(T)
   # ptr2[2] # => 13
   # ptr2[3] # => 14
   # ```
-  def copy_to(target : Pointer, count : Int)
+  def copy_to(target : Pointer, count : Int32)
     target.copy_from_impl(self, count)
   end
 
@@ -199,12 +199,12 @@ struct Pointer(T)
   # ptr1[2] # => 2
   # ptr1[3] # => 3
   # ```
-  def move_from(source : Pointer(T), count : Int)
+  def move_from(source : Pointer(T), count : Int32)
     source.move_to(self, count)
   end
 
   # :nodoc:
-  def move_from(source : Pointer(NoReturn), count : Int)
+  def move_from(source : Pointer(NoReturn), count : Int32)
     raise ArgumentError.new("Negative count") if count < 0
 
     # We need this overload for cases when we have a pointer to unreachable
@@ -229,7 +229,7 @@ struct Pointer(T)
   # ptr1[2] # => 2
   # ptr1[3] # => 3
   # ```
-  def move_to(target : Pointer, count : Int)
+  def move_to(target : Pointer, count : Int32)
     target.move_from_impl(self, count)
   end
 
@@ -238,7 +238,7 @@ struct Pointer(T)
   # copy_from/move_from/copy_to/move_to reverse self and caller,
   # and so if either self or the arguments are unions a dispatch
   # will happen and unions will disappear.
-  protected def copy_from_impl(source : Pointer(T), count : Int)
+  protected def copy_from_impl(source : Pointer(T), count : Int32)
     raise ArgumentError.new("Negative count") if count < 0
 
     if self.class == source.class
@@ -251,7 +251,7 @@ struct Pointer(T)
     self
   end
 
-  protected def move_from_impl(source : Pointer(T), count : Int)
+  protected def move_from_impl(source : Pointer(T), count : Int32)
     raise ArgumentError.new("Negative count") if count < 0
 
     if self.class == source.class
@@ -281,7 +281,7 @@ struct Pointer(T)
   # ptr2.memcmp(ptr1, 4) # => 10
   # ptr1.memcmp(ptr1, 4) # => 0
   # ```
-  def memcmp(other : Pointer(T), count : Int)
+  def memcmp(other : Pointer(T), count : Int32)
     LibC.memcmp(self.as(Void*), (other.as(Void*)), (count * sizeof(T)))
   end
 
@@ -344,7 +344,7 @@ struct Pointer(T)
   # ptr = ptr.realloc(8)
   # ptr # [1, 2, 3, 4, 0, 0, 0, 0]
   # ```
-  def realloc(size : Int)
+  def realloc(size : Int32)
     if size < 0
       raise ArgumentError.new("Negative size")
     end
@@ -359,7 +359,7 @@ struct Pointer(T)
   # ptr.shuffle!(4)
   # ptr # [3, 4, 1, 2]
   # ```
-  def shuffle!(count : Int, random = Random::DEFAULT)
+  def shuffle!(count : Int32, random = Random::DEFAULT)
     (count - 1).downto(1) do |i|
       j = random.rand(i + 1)
       swap(i, j)
@@ -375,14 +375,14 @@ struct Pointer(T)
   # ptr.map!(4) { |value| value * 2 }
   # ptr # [2, 4, 6, 8]
   # ```
-  def map!(count : Int)
+  def map!(count : Int32)
     count.times do |i|
       self[i] = yield self[i]
     end
   end
 
   # Like `map!`, but yield 2 arugments, the element and it's index
-  def map_with_index!(count : Int, &block)
+  def map_with_index!(count : Int32, &block)
     count.times do |i|
       self[i] = yield self[i], i
     end
@@ -408,7 +408,7 @@ struct Pointer(T)
   # ptr = Pointer(Int32).new(5678)
   # ptr.address # => 5678
   # ```
-  def self.new(address : Int)
+  def self.new(address : Int32)
     new address.to_u64
   end
 
@@ -428,7 +428,7 @@ struct Pointer(T)
   # # ...
   # ptr[9] # => 0
   # ```
-  def self.malloc(size : Int = 1)
+  def self.malloc(size : Int32 = 1)
     if size < 0
       raise ArgumentError.new("Negative Pointer#malloc size")
     end
@@ -448,7 +448,7 @@ struct Pointer(T)
   # ptr[0] # => 42
   # ptr[1] # => 42
   # ```
-  def self.malloc(size : Int, value : T)
+  def self.malloc(size : Int32, value : T)
     ptr = Pointer(T).malloc(size)
     size.times { |i| ptr[i] = value }
     ptr
@@ -469,7 +469,7 @@ struct Pointer(T)
   # ptr[2] # => 12
   # ptr[3] # => 13
   # ```
-  def self.malloc(size : Int, &block : Int32 -> T)
+  def self.malloc(size : Int32, &block : Int32 -> T)
     ptr = Pointer(T).malloc(size)
     size.times { |i| ptr[i] = yield i }
     ptr

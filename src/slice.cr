@@ -64,7 +64,7 @@ struct Slice(T)
   #
   # String.new(slice) # => "abc"
   # ```
-  def initialize(@pointer : Pointer(T), size : Int, *, @read_only = false)
+  def initialize(@pointer : Pointer(T), size : Int32, *, @read_only = false)
     @size = size.to_i32
   end
 
@@ -80,7 +80,7 @@ struct Slice(T)
   # slice = Slice(UInt8).new(3)
   # slice # => Bytes[0, 0, 0]
   # ```
-  def self.new(size : Int, *, read_only = false)
+  def self.new(size : Int32, *, read_only = false)
     {% unless T <= Int::Primitive || T <= Float::Primitive %}
       {% raise "Can only use primitive integers and floats with Slice.new(size), not #{T}" %}
     {% end %}
@@ -100,7 +100,7 @@ struct Slice(T)
   # slice = Slice.new(3) { |i| i + 10 }
   # slice # => Slice[10, 11, 12]
   # ```
-  def self.new(size : Int, *, read_only = false)
+  def self.new(size : Int32, *, read_only = false)
     pointer = Pointer.malloc(size) { |i| yield i }
     new(pointer, size, read_only: read_only)
   end
@@ -115,7 +115,7 @@ struct Slice(T)
   # slice = Slice.new(3, 10)
   # slice # => Slice[10, 10, 10]
   # ```
-  def self.new(size : Int, value : T, *, read_only = false)
+  def self.new(size : Int32, value : T, *, read_only = false)
     new(size, read_only: read_only) { value }
   end
 
@@ -146,7 +146,7 @@ struct Slice(T)
   # slice2 = slice + 2
   # slice2 # => Slice[12, 13, 14]
   # ```
-  def +(offset : Int)
+  def +(offset : Int32)
     unless 0 <= offset <= size
       raise IndexError.new
     end
@@ -168,7 +168,7 @@ struct Slice(T)
   # slice[10] = 1 # raises IndexError
   # ```
   @[AlwaysInline]
-  def []=(index : Int, value : T)
+  def []=(index : Int32, value : T)
     check_writable
 
     index += size if index < 0
@@ -204,7 +204,7 @@ struct Slice(T)
   end
 
   @[AlwaysInline]
-  def unsafe_at(index : Int)
+  def unsafe_at(index : Int32)
     @pointer[index]
   end
 
@@ -512,7 +512,7 @@ struct Slice(T)
   end
 
   # :nodoc:
-  def index(object, offset : Int = 0)
+  def index(object, offset : Int32 = 0)
     # Optimize for the case of looking for a byte in a byte slice
     if T.is_a?(UInt8.class) &&
        (object.is_a?(UInt8) || (object.is_a?(Int) && 0 <= object < 256))

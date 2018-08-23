@@ -248,7 +248,7 @@ struct XML::Builder
   end
 
   # Sets the indent *level* (number of spaces).
-  def indent=(level : Int)
+  def indent=(level : Int32)
     if level <= 0
       call SetIndent, 0
     else

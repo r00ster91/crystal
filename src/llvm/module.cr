@@ -67,7 +67,7 @@ class LLVM::Module
     MemoryBuffer.new(LibLLVM.write_bitcode_to_memory_buffer self)
   end
 
-  def write_bitcode_to_fd(fd : Int, should_close = false, buffered = false)
+  def write_bitcode_to_fd(fd : Int32, should_close = false, buffered = false)
     LibLLVM.write_bitcode_to_fd(self, fd, should_close ? 1 : 0, buffered ? 1 : 0)
   end
 

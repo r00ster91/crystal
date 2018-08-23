@@ -248,7 +248,7 @@ module Iterator(T)
   #
   # This can be used to prevent many memory allocations when each slice of
   # interest is to be used in a read-only fashion.
-  def cons(n : Int, reuse = false)
+  def cons(n : Int32, reuse = false)
     raise ArgumentError.new "Invalid cons size: #{n}" if n <= 0
     Cons(typeof(self), T, typeof(n)).new(self, n, reuse)
   end
@@ -342,7 +342,7 @@ module Iterator(T)
   # iter.next # => "c"
   # iter.next # => Iterator::Stop::INSTANCE
   # ```
-  def cycle(n : Int)
+  def cycle(n : Int32)
     CycleN(typeof(self), T, typeof(n)).new(self, n)
   end
 
@@ -601,7 +601,7 @@ module Iterator(T)
   #
   # This can be used to prevent many memory allocations when each slice of
   # interest is to be used in a read-only fashion.
-  def in_groups_of(size : Int, filled_up_with = nil, reuse = false)
+  def in_groups_of(size : Int32, filled_up_with = nil, reuse = false)
     raise ArgumentError.new("Size must be positive") if size <= 0
     InGroupsOf(typeof(self), T, typeof(size), typeof(filled_up_with)).new(self, size, filled_up_with, reuse)
   end
@@ -738,7 +738,7 @@ module Iterator(T)
   # iter.next # -> 3
   # iter.next # -> Iterator::Stop::INSTANCE
   # ```
-  def skip(n : Int)
+  def skip(n : Int32)
     raise ArgumentError.new "Attempted to skip negative size: #{n}" if n < 0
     Skip(typeof(self), T, typeof(n)).new(self, n)
   end
@@ -805,7 +805,7 @@ module Iterator(T)
   end
 
   # Alias of `each_slice`.
-  def slice(n : Int, reuse = false)
+  def slice(n : Int32, reuse = false)
     raise ArgumentError.new "Invalid slice size: #{n}" if n <= 0
     Slice(typeof(self), T, typeof(n)).new(self, n, reuse)
   end
@@ -861,7 +861,7 @@ module Iterator(T)
   # iter.next # => 5
   # iter.next # => Iterator::Stop::INSTANCE
   # ```
-  def step(n : Int)
+  def step(n : Int32)
     Step(self, T, typeof(n)).new(self, n)
   end
 
@@ -894,7 +894,7 @@ module Iterator(T)
   # iter.next # => "b"
   # iter.next # => Iterator::Stop::INSTANCE
   # ```
-  def first(n : Int)
+  def first(n : Int32)
     raise ArgumentError.new "Attempted to take negative size: #{n}" if n < 0
     First(typeof(self), T, typeof(n)).new(self, n)
   end
@@ -1054,12 +1054,12 @@ module Iterator(T)
   # iter.next # => {3, 2}
   # iter.next # => Iterator::Stop::INSTANCE
   # ```
-  def with_index(offset : Int = 0)
+  def with_index(offset : Int32 = 0)
     WithIndex(typeof(self), T, typeof(offset)).new(self, offset)
   end
 
   # Yields each element in this iterator together with its index.
-  def with_index(offset : Int = 0)
+  def with_index(offset : Int32 = 0)
     index = offset
     each do |value|
       yield value, index

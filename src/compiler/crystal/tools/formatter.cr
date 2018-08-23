@@ -4440,7 +4440,7 @@ module Crystal
       indent { accept node }
     end
 
-    def indent(indent : Int)
+    def indent(indent : Int32)
       old_indent = @indent
       @indent = indent
       value = yield
@@ -4449,7 +4449,7 @@ module Crystal
       value
     end
 
-    def indent(indent : Int, node : ASTNode | HashLiteral::Entry | NamedTupleLiteral::Entry)
+    def indent(indent : Int32, node : ASTNode | HashLiteral::Entry | NamedTupleLiteral::Entry)
       indent(indent) { accept node }
     end
 

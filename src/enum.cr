@@ -174,7 +174,7 @@ struct Enum
   # Color::Red + 2 # => Color::Blue
   # Color::Red + 3 # => Color.new(3)
   # ```
-  def +(other : Int)
+  def +(other : Int32)
     self.class.new(value + other)
   end
 
@@ -186,7 +186,7 @@ struct Enum
   # Color::Blue - 2 # => Color::Red
   # Color::Blue - 3 # => Color.new(-1)
   # ```
-  def -(other : Int)
+  def -(other : Int32)
     self.class.new(value - other)
   end
 
