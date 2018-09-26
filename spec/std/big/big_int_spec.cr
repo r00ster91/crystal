@@ -11,6 +11,7 @@ describe "BigInt" do
     BigInt.new(-1_i16).to_s.should eq("-1")
     BigInt.new(-1_i32).to_s.should eq("-1")
     BigInt.new(-1_i64).to_s.should eq("-1")
+    BigInt.new(-1_i128).to_s.should eq("-1")
   end
 
   it "creates from unsigned ints" do
@@ -18,6 +19,7 @@ describe "BigInt" do
     BigInt.new(1_u16).to_s.should eq("1")
     BigInt.new(1_u32).to_s.should eq("1")
     BigInt.new(1_u64).to_s.should eq("1")
+    BigInt.new(1_u128).to_s.should eq("1")
   end
 
   it "creates from string" do

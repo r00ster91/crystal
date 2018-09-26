@@ -1,8 +1,8 @@
 # Int is the base type of all integer types.
 #
-# There are four signed integer types: `Int8`, `Int16`, `Int32` and `Int64`,
-# being able to represent numbers of 8, 16, 32 and 64 bits respectively.
-# There are four unsigned integer types: `UInt8`, `UInt16`, `UInt32` and `UInt64`.
+# There are five signed integer types: `Int8`, `Int16`, `Int32`, `Int64` and `Int128`,
+# being able to represent numbers of 8, 16, 32, 64 and 128 bits respectively.
+# There are five unsigned integer types: `UInt8`, `UInt16`, `UInt32`, `UInt64` and `UInt128`.
 #
 # An integer literal is an optional `+` or `-` sign, followed by
 # a sequence of digits and underscores, optionally followed by a suffix.
@@ -12,15 +12,17 @@
 # ```
 # 1 # Int32
 #
-# 1_i8  # Int8
-# 1_i16 # Int16
-# 1_i32 # Int32
-# 1_i64 # Int64
+# 1_i8   # Int8
+# 1_i16  # Int16
+# 1_i32  # Int32
+# 1_i64  # Int64
+# 1_i128 # Int128
 #
-# 1_u8  # UInt8
-# 1_u16 # UInt16
-# 1_u32 # UInt32
-# 1_u64 # UInt64
+# 1_u8   # UInt8
+# 1_u16  # UInt16
+# 1_u32  # UInt32
+# 1_u64  # UInt64
+# 1_u128 # UInt128
 #
 # +10 # Int32
 # -20 # Int32
@@ -34,7 +36,7 @@
 # Underscores can be used to make some numbers more readable:
 #
 # ```
-# 1_000_000 # better than 1000000
+# 1_000_000 # better to read than 1000000
 # ```
 #
 # Binary numbers start with `0b`:
@@ -683,8 +685,9 @@ struct Int64
 end
 
 struct Int128
-  # TODO: eventually update to literals once UInt128 bit support is finished
+  # TODO: replace this with -170141183460469231731687303715884105728_i128 after 0.26.1
   MIN = new(1) << 127
+  # TODO: replace this with 170141183460469231731687303715884105727_i128 after 0.26.1
   MAX = ~MIN
 
   # Returns an `Int128` by invoking `to_i128` on *value*.
@@ -693,8 +696,7 @@ struct Int128
   end
 
   def -
-    # TODO: use 0_i128 - self
-    Int128.new(0) - self
+    0_i128 - self
   end
 
   def popcount
@@ -795,8 +797,10 @@ struct UInt64
 end
 
 struct UInt128
-  # TODO: eventually update to literals once UInt128 bit support is finished
+  # TODO: replace this with 0_u128 after 0.26.1
   MIN = new 0
+
+  # TODO: replace this with 340282366920938463463374607431768211455_u128 after 0.26.1
   MAX = ~MIN
 
   # Returns an `UInt128` by invoking `to_u128` on *value*.

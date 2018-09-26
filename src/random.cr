@@ -112,7 +112,7 @@ module Random
     rand_int(max)
   end
 
-  {% for size in [8, 16, 32, 64] %}
+  {% for size in [8, 16, 32, 64, 128] %}
     {% utype = "UInt#{size}".id %}
     {% for type in ["Int#{size}".id, utype] %}
       private def rand_int(max : {{type}}) : {{type}}
@@ -147,7 +147,7 @@ module Random
         # are several difficult parts about this. The code below uses as few calls to the underlying
         # RNG as possible, meaning that (with the above example) with *max* being 257, it would call
         # the RNG 3 times. (Of course, it doesn't actually deal with RNGs that produce numbers
-        # 0 to 15, only with the `UInt8`, `UInt16`, `UInt32` and `UInt64` ranges.
+        # 0 to 15, only with the `UInt8`, `UInt16`, `UInt32`, `UInt64` and `UInt128` ranges.
         #
         # Another problem is how to actually compute the *limit*. The obvious way to do it, which is
         # `(RAND_MAX + 1) / max * max`, fails because `RAND_MAX` is usually already the highest

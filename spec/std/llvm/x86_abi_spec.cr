@@ -71,6 +71,7 @@ class LLVM::ABI
         abi.size(ctx.int16).should eq(2)
         abi.size(ctx.int32).should eq(4)
         abi.size(ctx.int64).should eq(8)
+        abi.size(ctx.int128).should eq(16)
       end
 
       test "for pointer" do |abi, ctx|

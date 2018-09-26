@@ -27,6 +27,12 @@ describe "Int" do
       x.should be_a(UInt8)
     end
 
+    it "with positive UInt128" do
+      x = 2_u128 ** 2
+      x.should eq(4)
+      x.should be_a(UInt128)
+    end
+
     it "raises with negative exponent" do
       expect_raises(ArgumentError, "Cannot raise an integer to a negative integer power, use floats for that") do
         2 ** -1
@@ -90,6 +96,8 @@ describe "Int" do
       -1_i32.abs.should eq(1_i32)
       1_i64.abs.should eq(1_i64)
       -1_i64.abs.should eq(1_i64)
+      1_i128.abs.should eq(1_i128)
+      -1_i128.abs.should eq(1_i128)
     end
 
     it "does for unsigned" do
@@ -97,6 +105,7 @@ describe "Int" do
       1_u16.abs.should eq(1_u16)
       1_u32.abs.should eq(1_u32)
       1_u64.abs.should eq(1_u64)
+      1_u128.abs.should eq(1_u128)
     end
   end
 
@@ -186,14 +195,17 @@ describe "Int" do
 
   describe "#inspect" do
     it "appends the type" do
-      23.inspect.should eq("23")
       23_i8.inspect.should eq("23_i8")
       23_i16.inspect.should eq("23_i16")
+      23.inspect.should eq("23")
       -23_i64.inspect.should eq("-23_i64")
+      -23_i128.inspect.should eq("-23_i128")
+
       23_u8.inspect.should eq("23_u8")
       23_u16.inspect.should eq("23_u16")
       23_u32.inspect.should eq("23_u32")
       23_u64.inspect.should eq("23_u64")
+      23_u128.inspect.should eq("23_u128")
     end
 
     it "appends the type using IO" do
@@ -284,11 +296,14 @@ describe "Int" do
       9223372036854775807_i64.to_s.should eq("9223372036854775807")
       -9223372036854775808_i64.to_s.should eq("-9223372036854775808")
 
+      218923798132_i128.to_s.should eq("218923798132")
+      -1981389331_i128.to_s.should eq("-1981389331")
+
       255_u8.to_s.should eq("255")
       65535_u16.to_s.should eq("65535")
       4294967295_u32.to_s.should eq("4294967295")
-
       18446744073709551615_u64.to_s.should eq("18446744073709551615")
+      1983871898931987318_u128.to_s.should eq("1983871898931987318")
     end
 
     it "does to_s for various int sizes with IO" do
@@ -307,11 +322,14 @@ describe "Int" do
       to_s_with_io(9223372036854775807_i64).should eq("9223372036854775807")
       to_s_with_io(-9223372036854775808_i64).should eq("-9223372036854775808")
 
+      to_s_with_io(218923798132_i128).should eq("218923798132")
+      to_s_with_io(-1981389331_i128).should eq("-1981389331")
+
       to_s_with_io(255_u8).should eq("255")
       to_s_with_io(65535_u16).should eq("65535")
       to_s_with_io(4294967295_u32).should eq("4294967295")
-
       to_s_with_io(18446744073709551615_u64).should eq("18446744073709551615")
+      to_s_with_io(1983871898931987318_u128).should eq("1983871898931987318")
     end
   end
 
@@ -336,6 +354,9 @@ describe "Int" do
     Int64.new(1).should be_a(Int64)
     Int64.new(1).should eq(1)
 
+    Int128.new(1).should be_a(Int128)
+    Int128.new(1).should eq(1)
+
     UInt8.new(1).should be_a(UInt8)
     UInt8.new(1).should eq(1)
 
@@ -347,6 +368,9 @@ describe "Int" do
 
     UInt64.new(1).should be_a(UInt64)
     UInt64.new(1).should eq(1)
+
+    UInt128.new(1).should be_a(UInt128)
+    UInt128.new(1).should eq(1)
   end
 
   it "divides negative numbers" do
@@ -388,6 +412,7 @@ describe "Int" do
     expect_raises(ArgumentError) { Int16::MIN / -1 }
     expect_raises(ArgumentError) { Int32::MIN / -1 }
     expect_raises(ArgumentError) { Int64::MIN / -1 }
+    expect_raises(ArgumentError) { Int128::MIN / -1 }
 
     (UInt8::MIN / -1).should eq(0)
   end
@@ -591,11 +616,15 @@ describe "Int" do
     it { 5_i64.popcount.should eq(2) }
     it { 9223372036854775807_i64.popcount.should eq(63) }
     it { 18446744073709551615_u64.popcount.should eq(64) }
+
+    it { 12817331977713_i128.popcount.should eq(22) }
+    it { 913209813_i128.popcount.should eq(19) }
+    it { 1_u128.popcount.should eq(1) }
   end
 
   it "compares signed vs. unsigned integers" do
-    signed_ints = [Int8::MAX, Int16::MAX, Int32::MAX, Int64::MAX, Int8::MIN, Int16::MIN, Int32::MIN, Int64::MIN, 0_i8, 0_i16, 0_i32, 0_i64]
-    unsigned_ints = [UInt8::MAX, UInt16::MAX, UInt32::MAX, UInt64::MAX, 0_u8, 0_u16, 0_u32, 0_u64]
+    signed_ints = [Int8::MAX, Int16::MAX, Int32::MAX, Int64::MAX, Int128::MAX, Int8::MIN, Int16::MIN, Int32::MIN, Int64::MIN, Int128::MIN, 0_i8, 0_i16, 0_i32, 0_i64, 0_i128]
+    unsigned_ints = [UInt8::MAX, UInt16::MAX, UInt32::MAX, UInt64::MAX, UInt128::MAX, 0_u8, 0_u16, 0_u32, 0_u64, 0_u128]
 
     big_signed_ints = signed_ints.map &.to_big_i
     big_unsigned_ints = unsigned_ints.map &.to_big_i
@@ -624,7 +653,7 @@ describe "Int" do
   {% end %}
 
   it "clones" do
-    [1_u8, 2_u16, 3_u32, 4_u64, 5_i8, 6_i16, 7_i32, 8_i64].each do |value|
+    [1_u8, 2_u16, 3_u32, 4_u64, 5_u128, 6_i8, 7_i16, 8_i32, 9_i64, 10_i128].each do |value|
       value.clone.should eq(value)
     end
   end

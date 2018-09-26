@@ -53,6 +53,18 @@ describe IO::ByteFormat do
           assert_bytes io, 0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12
         end
 
+        it "writes int128" do
+          io = IO::Memory.new
+          io.write_bytes 0x123456789ABCDEF0_i128, IO::ByteFormat::LittleEndian
+          assert_bytes io, 0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12
+        end
+
+        it "writes uint128" do
+          io = IO::Memory.new
+          io.write_bytes 0x123456789ABCDEF0_u128, IO::ByteFormat::LittleEndian
+          assert_bytes io, 0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12
+        end
+
         it "writes float32" do
           io = IO::Memory.new
           io.write_bytes 1.234_f32, IO::ByteFormat::LittleEndian
@@ -76,6 +88,12 @@ describe IO::ByteFormat do
         it "writes int16" do
           bytes = Bytes[0, 0]
           IO::ByteFormat::LittleEndian.encode(0x1234_i16, bytes)
+          bytes.should eq(Bytes[0x34, 0x12])
+        end
+
+        it "writes int128" do
+          bytes = Bytes[0, 0]
+          IO::ByteFormat::LittleEndian.encode(0x1234_i128, bytes)
           bytes.should eq(Bytes[0x34, 0x12])
         end
 
@@ -117,6 +135,12 @@ describe IO::ByteFormat do
           io = new_string_io(0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12)
           int = io.read_bytes Int64, IO::ByteFormat::LittleEndian
           int.should eq(0x123456789ABCDEF0_i64)
+        end
+
+        it "reads int128" do
+          io = new_string_io(0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12)
+          int = io.read_bytes Int64, IO::ByteFormat::LittleEndian
+          int.should eq(0x123456789ABCDEF0_i128)
         end
 
         it "reads float32" do
@@ -189,6 +213,12 @@ describe IO::ByteFormat do
       it "writes int64" do
         io = IO::Memory.new
         io.write_bytes 0x123456789ABCDEF0_i64, IO::ByteFormat::BigEndian
+        assert_bytes_reversed io, 0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12
+      end
+
+      it "writes int128" do
+        io = IO::Memory.new
+        io.write_bytes 0x123456789ABCDEF0_i128, IO::ByteFormat::BigEndian
         assert_bytes_reversed io, 0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12
       end
 

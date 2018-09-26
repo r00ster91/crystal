@@ -755,12 +755,14 @@ describe IO do
         io.print 2_u16
         io.print 3_u32
         io.print 4_u64
-        io.print 5_i8
-        io.print 6_i16
-        io.print 7_i32
-        io.print 8_i64
-        io.print 9.1_f32
-        io.print 10.11_f64
+        io.print 5_u128
+        io.print 6_i8
+        io.print 7_i16
+        io.print 8_i32
+        io.print 9_i64
+        io.print 10_i128
+        io.print 11.1_f32
+        io.print 12.11_f64
         slice = io.to_slice
         slice.should eq("0123456789.110.11".encode("UCS-2LE"))
       end

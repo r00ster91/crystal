@@ -66,7 +66,7 @@ def Bool.new(pull : JSON::PullParser)
   pull.read_bool
 end
 
-{% for type in %w(Int8 Int16 Int32 Int64 UInt8 UInt16 UInt32 UInt64) %}
+{% for type in %w(Int8 Int16 Int32 Int64 Int128 UInt8 UInt16 UInt32 UInt64 UInt128) %}
   def {{type.id}}.new(pull : JSON::PullParser)
     {{type.id}}.new(pull.read_int)
   end
@@ -201,8 +201,8 @@ def Union.new(pull : JSON::PullParser)
       {% if type == Nil %}
         return pull.read_null if pull.kind == :null
       {% elsif type == Bool ||
-                 type == Int8 || type == Int16 || type == Int32 || type == Int64 ||
-                 type == UInt8 || type == UInt16 || type == UInt32 || type == UInt64 ||
+                 type == Int8 || type == Int16 || type == Int32 || type == Int64 || type == Int128 ||
+                 type == UInt8 || type == UInt16 || type == UInt32 || type == UInt64 || type == UInt128 ||
                  type == Float32 || type == Float64 ||
                  type == String %}
         value = pull.read?({{type}})

@@ -178,6 +178,9 @@ describe "Lexer" do
   it_lexes_number :i64, ["1i64", "1"]
   it_lexes_number :i64, ["1_i64", "1"]
 
+  it_lexes_number :i128, ["1i128", "1"]
+  it_lexes_number :i128, ["1_i128", "1"]
+
   it_lexes_number :u8, ["1u8", "1"]
   it_lexes_number :u8, ["1_u8", "1"]
 

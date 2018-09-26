@@ -152,7 +152,7 @@ describe "JSON serialization" do
       Union(Bool, Array(Int32)).from_json(%(true)).should be_true
     end
 
-    {% for type in %w(Int8 Int16 Int32 Int64 UInt8 UInt16 UInt32 UInt64).map(&.id) %}
+    {% for type in %w(Int8 Int16 Int32 Int64 Int128 UInt8 UInt16 UInt32 UInt64 UInt128).map(&.id) %}
         it "deserializes union with {{type}} (fast path)" do
           Union({{type}}, Array(Int32)).from_json(%(#{ {{type}}::MAX })).should eq({{type}}::MAX)
         end

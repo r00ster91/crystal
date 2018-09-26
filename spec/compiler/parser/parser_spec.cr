@@ -49,6 +49,8 @@ module Crystal
 
     it_parses "1_u128", 1.uint128
     it_parses "1_i128", 1.int128
+    it_parses "-1_u128", -1.uint128
+    it_parses "+1_u128", 1.uint128
 
     it_parses "1.0", 1.0.float64
     it_parses "+1.0", 1.0.float64
@@ -98,6 +100,8 @@ module Crystal
     it_parses "1 -2.0", Call.new(1.int32, "-", 2.float64)
     it_parses "1 +2_i64", Call.new(1.int32, "+", 2.int64)
     it_parses "1 -2_i64", Call.new(1.int32, "-", 2.int64)
+    it_parses "1 +2_i128", Call.new(1.int32, "+", 2.int128)
+    it_parses "1 -2_i128", Call.new(1.int32, "-", 2.int128)
     it_parses "1\n+2", [1.int32, 2.int32] of ASTNode
     it_parses "1;+2", [1.int32, 2.int32] of ASTNode
     it_parses "1 - 2", Call.new(1.int32, "-", 2.int32)
