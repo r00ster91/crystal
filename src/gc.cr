@@ -56,15 +56,15 @@ module GC
     bytes_since_gc : LibC::ULong,
     total_bytes : LibC::ULong
 
-  def self.malloc(size : Int)
+  def self.malloc(size : Int32)
     malloc(LibC::SizeT.new(size))
   end
 
-  def self.malloc_atomic(size : Int)
+  def self.malloc_atomic(size : Int32)
     malloc_atomic(LibC::SizeT.new(size))
   end
 
-  def self.realloc(pointer : Void*, size : Int)
+  def self.realloc(pointer : Void*, size : Int32)
     realloc(pointer, LibC::SizeT.new(size))
   end
 end

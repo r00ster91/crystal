@@ -36,7 +36,7 @@ class Process
   end
 
   # Sends a *signal* to the processes identified by the given *pids*.
-  def self.kill(signal : Signal, *pids : Int)
+  def self.kill(signal : Signal, *pids : Int32)
     pids.each do |pid|
       ret = LibC.kill(pid, signal.value)
       raise Errno.new("kill") if ret < 0
@@ -47,7 +47,7 @@ class Process
   # Returns `true` if the process identified by *pid* is valid for
   # a currently registered process, `false` otherwise. Note that this
   # returns `true` for a process in the zombie or similar state.
-  def self.exists?(pid : Int)
+  def self.exists?(pid : Int32)
     ret = LibC.kill(pid, 0)
     if ret == 0
       true

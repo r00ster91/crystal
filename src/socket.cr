@@ -103,7 +103,7 @@ class Socket < IO
   # sock = Socket.tcp(Socket::Family::INET)
   # sock.connect "crystal-lang.org", 80
   # ```
-  def connect(host : String, port : Int, connect_timeout = nil)
+  def connect(host : String, port : Int32, connect_timeout = nil)
     Addrinfo.resolve(host, port, @family, @type, @protocol) do |addrinfo|
       connect(addrinfo, timeout: connect_timeout) { |error| error }
     end
@@ -146,7 +146,7 @@ class Socket < IO
   # sock = Socket.tcp(Socket::Family::INET)
   # sock.bind "localhost", 1234
   # ```
-  def bind(host : String, port : Int)
+  def bind(host : String, port : Int32)
     Addrinfo.resolve(host, port, @family, @type, @protocol) do |addrinfo|
       bind(addrinfo) { |errno| errno }
     end
@@ -158,7 +158,7 @@ class Socket < IO
   # sock = Socket.tcp(Socket::Family::INET6)
   # sock.bind 1234
   # ```
-  def bind(port : Int)
+  def bind(port : Int32)
     Addrinfo.resolve("::", port, @family, @type, @protocol) do |addrinfo|
       bind(addrinfo) { |errno| errno }
     end

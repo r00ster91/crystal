@@ -14,7 +14,7 @@ module LLVM::ValueMethods
     LibLLVM.get_value_kind(self)
   end
 
-  def add_instruction_attribute(index : Int, attribute : LLVM::Attribute, context : LLVM::Context)
+  def add_instruction_attribute(index : Int32, attribute : LLVM::Attribute, context : LLVM::Context)
     return if attribute.value == 0
     {% if LibLLVM.has_constant?(:AttributeRef) %}
       attribute.each_kind do |kind|

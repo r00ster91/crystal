@@ -29,7 +29,7 @@ class TCPServer < TCPSocket
   end
 
   # Binds a socket to the *host* and *port* combination.
-  def initialize(host : String, port : Int, backlog = SOMAXCONN, dns_timeout = nil, reuse_port = false)
+  def initialize(host : String, port : Int32, backlog = SOMAXCONN, dns_timeout = nil, reuse_port = false)
     Addrinfo.tcp(host, port, timeout: dns_timeout) do |addrinfo|
       super(addrinfo.family, addrinfo.type, addrinfo.protocol)
 
@@ -49,7 +49,7 @@ class TCPServer < TCPSocket
   end
 
   # Creates a new TCP server, listening on all local interfaces (`::`).
-  def self.new(port : Int, backlog = SOMAXCONN, reuse_port = false)
+  def self.new(port : Int32, backlog = SOMAXCONN, reuse_port = false)
     new("::", port, backlog, reuse_port: reuse_port)
   end
 
@@ -70,7 +70,7 @@ class TCPServer < TCPSocket
   # block. Eventually closes the server socket when the block returns.
   #
   # Returns the value of the block.
-  def self.open(port : Int, backlog = SOMAXCONN, reuse_port = false)
+  def self.open(port : Int32, backlog = SOMAXCONN, reuse_port = false)
     server = new(port, backlog, reuse_port: reuse_port)
     begin
       yield server

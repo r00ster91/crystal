@@ -27,12 +27,12 @@ module Iterable(T)
   end
 
   # Same as `each.slice(count, reuse)`.
-  def each_slice(count : Int, reuse = false)
+  def each_slice(count : Int32, reuse = false)
     each.slice(count, reuse)
   end
 
   # Same as `each.cons(count)`.
-  def each_cons(count : Int, reuse = false)
+  def each_cons(count : Int32, reuse = false)
     each.cons(count, reuse)
   end
 

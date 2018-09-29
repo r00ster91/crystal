@@ -419,7 +419,7 @@ struct XML::Node
   # Serialize this Node as XML and return a `String` using default options.
   #
   # See `XML::SaveOptions.xml_default` for default options.
-  def to_xml(indent : Int = 2, indent_text = " ", options : SaveOptions = SaveOptions.xml_default)
+  def to_xml(indent : Int32 = 2, indent_text = " ", options : SaveOptions = SaveOptions.xml_default)
     String.build do |str|
       to_xml str, indent, indent_text, options
     end

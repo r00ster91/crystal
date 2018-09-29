@@ -73,7 +73,7 @@ class JSON::Builder
   end
 
   # Writes an integer.
-  def number(number : Int)
+  def number(number : Int32)
     scalar do
       @io << number
     end
@@ -232,7 +232,7 @@ class JSON::Builder
   end
 
   # ditto
-  def scalar(value : Int | Float)
+  def scalar(value : Int32 | Float)
     number(value)
   end
 
@@ -272,7 +272,7 @@ class JSON::Builder
   end
 
   # Sets the indent *level* (number of spaces).
-  def indent=(level : Int)
+  def indent=(level : Int32)
     if level < 0
       @indent = nil
     else

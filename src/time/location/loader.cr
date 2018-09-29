@@ -151,7 +151,7 @@ class Time::Location
     io.read_bytes(Int32, IO::ByteFormat::BigEndian)
   end
 
-  private def self.read_buffer(io : IO, size : Int)
+  private def self.read_buffer(io : IO, size : Int32)
     buffer = Bytes.new(size)
     io.read_fully(buffer)
     IO::Memory.new(buffer)

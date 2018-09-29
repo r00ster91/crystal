@@ -106,7 +106,7 @@ struct BigInt < Int
     BigInt.new { |mpz| LibGMP.add(mpz, self, other) }
   end
 
-  def +(other : Int) : BigInt
+  def +(other : Int32) : BigInt
     if other < 0
       self - other.abs
     elsif other <= LibGMP::ULong::MAX
@@ -120,7 +120,7 @@ struct BigInt < Int
     BigInt.new { |mpz| LibGMP.sub(mpz, self, other) }
   end
 
-  def -(other : Int) : BigInt
+  def -(other : Int32) : BigInt
     if other < 0
       self + other.abs
     elsif other <= LibGMP::ULong::MAX
@@ -150,11 +150,11 @@ struct BigInt < Int
     BigInt.new { |mpz| LibGMP.mul_ui(mpz, self, other) }
   end
 
-  def *(other : Int) : BigInt
+  def *(other : Int32) : BigInt
     self * other.to_big_i
   end
 
-  def /(other : Int) : BigInt
+  def /(other : Int32) : BigInt
     check_division_by_zero other
 
     if other < 0
@@ -164,7 +164,7 @@ struct BigInt < Int
     end
   end
 
-  def tdiv(other : Int) : BigInt
+  def tdiv(other : Int32) : BigInt
     check_division_by_zero other
 
     unsafe_truncated_div(other)
@@ -174,7 +174,7 @@ struct BigInt < Int
     BigInt.new { |mpz| LibGMP.fdiv_q(mpz, self, other) }
   end
 
-  def unsafe_floored_div(other : Int) : BigInt
+  def unsafe_floored_div(other : Int32) : BigInt
     if LibGMP::ULong == UInt32 && (other < Int32::MIN || other > UInt32::MAX)
       unsafe_floored_div(other.to_big_i)
     elsif other < 0
@@ -188,7 +188,7 @@ struct BigInt < Int
     BigInt.new { |mpz| LibGMP.tdiv_q(mpz, self, other) }
   end
 
-  def unsafe_truncated_div(other : Int) : BigInt
+  def unsafe_truncated_div(other : Int32) : BigInt
     if LibGMP::ULong == UInt32 && (other < Int32::MIN || other > UInt32::MAX)
       unsafe_truncated_div(other.to_big_i)
     elsif other < 0
@@ -198,7 +198,7 @@ struct BigInt < Int
     end
   end
 
-  def %(other : Int) : BigInt
+  def %(other : Int32) : BigInt
     check_division_by_zero other
 
     if other < 0
@@ -208,7 +208,7 @@ struct BigInt < Int
     end
   end
 
-  def remainder(other : Int) : BigInt
+  def remainder(other : Int32) : BigInt
     check_division_by_zero other
 
     unsafe_truncated_mod(other)
@@ -247,7 +247,7 @@ struct BigInt < Int
     BigInt.new { |mpz| LibGMP.fdiv_r(mpz, self, other) }
   end
 
-  def unsafe_floored_mod(other : Int) : BigInt
+  def unsafe_floored_mod(other : Int32) : BigInt
     if (other < LibGMP::Long::MIN || other > LibGMP::ULong::MAX)
       unsafe_floored_mod(other.to_big_i)
     elsif other < 0
@@ -265,7 +265,7 @@ struct BigInt < Int
     BigInt.new { |mpz| LibGMP.tdiv_r_ui(mpz, self, other.abs) }
   end
 
-  def unsafe_truncated_mod(other : Int) : BigInt
+  def unsafe_truncated_mod(other : Int32) : BigInt
     BigInt.new { |mpz| LibGMP.tdiv_r_ui(mpz, self, other.abs.to_big_i) }
   end
 
@@ -297,27 +297,27 @@ struct BigInt < Int
     BigInt.new { |mpz| LibGMP.com(mpz, self) }
   end
 
-  def &(other : Int) : BigInt
+  def &(other : Int32) : BigInt
     BigInt.new { |mpz| LibGMP.and(mpz, self, other.to_big_i) }
   end
 
-  def |(other : Int) : BigInt
+  def |(other : Int32) : BigInt
     BigInt.new { |mpz| LibGMP.ior(mpz, self, other.to_big_i) }
   end
 
-  def ^(other : Int) : BigInt
+  def ^(other : Int32) : BigInt
     BigInt.new { |mpz| LibGMP.xor(mpz, self, other.to_big_i) }
   end
 
-  def >>(other : Int) : BigInt
+  def >>(other : Int32) : BigInt
     BigInt.new { |mpz| LibGMP.fdiv_q_2exp(mpz, self, other) }
   end
 
-  def <<(other : Int) : BigInt
+  def <<(other : Int32) : BigInt
     BigInt.new { |mpz| LibGMP.mul_2exp(mpz, self, other) }
   end
 
-  def **(other : Int) : BigInt
+  def **(other : Int32) : BigInt
     if other < 0
       raise ArgumentError.new("Negative exponent isn't supported")
     end
@@ -328,7 +328,7 @@ struct BigInt < Int
     BigInt.new { |mpz| LibGMP.gcd(mpz, self, other) }
   end
 
-  def gcd(other : Int) : Int
+  def gcd(other : Int32) : Int
     result = LibGMP.gcd_ui(nil, self, other.abs.to_u64)
     result == 0 ? self : result
   end
@@ -337,7 +337,7 @@ struct BigInt < Int
     BigInt.new { |mpz| LibGMP.lcm(mpz, self, other) }
   end
 
-  def lcm(other : Int) : BigInt
+  def lcm(other : Int32) : BigInt
     BigInt.new { |mpz| LibGMP.lcm_ui(mpz, self, other.abs.to_u64) }
   end
 
@@ -371,7 +371,7 @@ struct BigInt < Int
   # BigInt.new("123456789101101987654321").to_s(16) # => "1a249b1f61599cd7eab1"
   # BigInt.new("123456789101101987654321").to_s(36) # => "k3qmt029k48nmpd"
   # ```
-  def to_s(base : Int)
+  def to_s(base : Int32)
     raise "Invalid base #{base}" unless 2 <= base <= 36
     cstr = LibGMP.get_str(nil, base, self)
     String.new(cstr)

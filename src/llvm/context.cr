@@ -51,7 +51,7 @@ class LLVM::Context
     Type.new LibLLVM.int128_type_in_context(self)
   end
 
-  def int(bits : Int) : Type
+  def int(bits : Int32) : Type
     Type.new LibLLVM.int_type_in_context(self, bits)
   end
 

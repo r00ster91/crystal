@@ -158,7 +158,7 @@ class IO
       count
     end
 
-    def gets(io, delimiter : UInt8, limit : Int, chomp)
+    def gets(io, delimiter : UInt8, limit : Int32, chomp)
       read(io)
       return nil if @out_slice.empty?
 

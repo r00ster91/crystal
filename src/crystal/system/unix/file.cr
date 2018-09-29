@@ -65,7 +65,7 @@ module Crystal::System::File
     LibC.access(path.check_no_null_byte, flag) == 0
   end
 
-  def self.chown(path, uid : Int, gid : Int, follow_symlinks)
+  def self.chown(path, uid : Int32, gid : Int32, follow_symlinks)
     ret = if !follow_symlinks && ::File.symlink?(path)
             LibC.lchown(path, uid, gid)
           else

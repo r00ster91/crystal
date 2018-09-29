@@ -58,7 +58,7 @@ class HTTP::Server
     end
 
     # Convenience method to set the `Content-Length` header.
-    def content_length=(content_length : Int)
+    def content_length=(content_length : Int32)
       headers["Content-Length"] = content_length.to_s
     end
 

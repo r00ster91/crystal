@@ -27,7 +27,7 @@ struct BigRational < Number
   # Create a new `BigRational`.
   #
   # If *denominator* is 0, this will raise an exception.
-  def initialize(numerator : Int, denominator : Int)
+  def initialize(numerator : Int32, denominator : Int32)
     check_division_by_zero denominator
 
     numerator = BigInt.new(numerator) unless numerator.is_a?(BigInt)
@@ -40,7 +40,7 @@ struct BigRational < Number
   end
 
   # Creates a new `BigRational` with *num* as the numerator and 1 for denominator.
-  def initialize(num : Int)
+  def initialize(num : Int32)
     initialize(num, 1)
   end
 
@@ -90,7 +90,7 @@ struct BigRational < Number
     to_big_f <=> other.to_big_f
   end
 
-  def <=>(other : Int)
+  def <=>(other : Int32)
     LibGMP.mpq_cmp(mpq, other.to_big_r)
   end
 
@@ -98,7 +98,7 @@ struct BigRational < Number
     BigRational.new { |mpq| LibGMP.mpq_add(mpq, self, other) }
   end
 
-  def +(other : Int)
+  def +(other : Int32)
     self + other.to_big_r
   end
 
@@ -106,7 +106,7 @@ struct BigRational < Number
     BigRational.new { |mpq| LibGMP.mpq_sub(mpq, self, other) }
   end
 
-  def -(other : Int)
+  def -(other : Int32)
     self - other.to_big_r
   end
 
@@ -114,7 +114,7 @@ struct BigRational < Number
     BigRational.new { |mpq| LibGMP.mpq_mul(mpq, self, other) }
   end
 
-  def *(other : Int)
+  def *(other : Int32)
     self * other.to_big_r
   end
 
@@ -123,7 +123,7 @@ struct BigRational < Number
     BigRational.new { |mpq| LibGMP.mpq_div(mpq, self, other) }
   end
 
-  def /(other : Int)
+  def /(other : Int32)
     self / other.to_big_r
   end
 
@@ -132,7 +132,7 @@ struct BigRational < Number
   # ```
   # BigRational.new(2, 3) >> 2 # => 1/6
   # ```
-  def >>(other : Int)
+  def >>(other : Int32)
     BigRational.new { |mpq| LibGMP.mpq_div_2exp(mpq, self, other) }
   end
 
@@ -141,7 +141,7 @@ struct BigRational < Number
   # ```
   # BigRational.new(2, 3) << 2 # => 8/3
   # ```
-  def <<(other : Int)
+  def <<(other : Int32)
     BigRational.new { |mpq| LibGMP.mpq_mul_2exp(mpq, self, other) }
   end
 

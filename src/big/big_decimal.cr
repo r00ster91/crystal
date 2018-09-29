@@ -53,7 +53,7 @@ struct BigDecimal < Number
   end
 
   # Creates a new `BigDecimal` from `Int`.
-  def initialize(num : Int = 0, scale : Int = 0)
+  def initialize(num : Int32 = 0, scale : Int32 = 0)
     initialize(num.to_big_i, scale.to_u64)
   end
 
@@ -157,7 +157,7 @@ struct BigDecimal < Number
     end
   end
 
-  def +(other : Int)
+  def +(other : Int32)
     self + BigDecimal.new(other)
   end
 
@@ -173,7 +173,7 @@ struct BigDecimal < Number
     end
   end
 
-  def -(other : Int)
+  def -(other : Int32)
     self - BigDecimal.new(other)
   end
 
@@ -181,7 +181,7 @@ struct BigDecimal < Number
     BigDecimal.new(@value * other.value, @scale + other.scale)
   end
 
-  def *(other : Int)
+  def *(other : Int32)
     self * BigDecimal.new(other)
   end
 
@@ -189,7 +189,7 @@ struct BigDecimal < Number
     div other
   end
 
-  def /(other : Int)
+  def /(other : Int32)
     self / BigDecimal.new(other)
   end
 
@@ -233,7 +233,7 @@ struct BigDecimal < Number
     end
   end
 
-  def <=>(other : Int | Float | BigRational)
+  def <=>(other : Int32 | Float | BigRational)
     self <=> BigDecimal.new(other)
   end
 
@@ -405,7 +405,7 @@ struct BigDecimal < Number
     raise DivisionByZeroError.new if bd.value == 0
   end
 
-  private def power_ten_to(x : Int) : Int
+  private def power_ten_to(x : Int32) : Int
     TEN ** x
   end
 

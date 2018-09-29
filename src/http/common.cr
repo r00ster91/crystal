@@ -336,7 +336,7 @@ module HTTP
   # * 4xx: Client Error - The request contains bad syntax or cannot be fulfilled
   # * 5xx: Server Error - The server failed to fulfill an apparently valid request
   #
-  def self.default_status_message_for(status_code : Int) : String
+  def self.default_status_message_for(status_code : Int32) : String
     case status_code
     when 100 then "Continue"
     when 101 then "Switching Protocols"

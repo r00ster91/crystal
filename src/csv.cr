@@ -229,14 +229,14 @@ class CSV
   # Returns the current row's value at the given column index.
   # A negative index counts from the end.
   # Raises `IndexError` if no such column exists.
-  def [](column : Int) : String
+  def [](column : Int32) : String
     row_internal[column]
   end
 
   # Returns the current row's value at the given column index.
   # A negative index counts from the end.
   # Returns `nil` if no such column exists.
-  def []?(column : Int) : String?
+  def []?(column : Int32) : String?
     row_internal[column]?
   end
 
@@ -258,7 +258,7 @@ class CSV
   # A negative index counts from the end.
   # Raises `IndexError` if any column doesn't exist
   # The behavior of returning a tuple is similar to `Hash#values_at`
-  def values_at(*columns : Int)
+  def values_at(*columns : Int32)
     columns.map { |column| row_internal[column] }
   end
 
@@ -336,7 +336,7 @@ class CSV
     # Returns this row's value at the given column index.
     # A negative index counts from the end.
     # Raises `IndexError` if no such column exists.
-    def [](column : Int) : String
+    def [](column : Int32) : String
       value = self.[]?(column)
       raise IndexError.new("Missing column index: #{column}") unless value
       value
@@ -345,7 +345,7 @@ class CSV
     # Returns this row's value at the given column index.
     # A negative index counts from the end.
     # Returns `nil` if no such column exists.
-    def []?(column : Int) : String?
+    def []?(column : Int32) : String?
       size = csv.headers?.try(&.size) || @row.size
 
       column += size if column < 0
@@ -401,7 +401,7 @@ class CSV
     # A negative index counts from the end.
     # Raises `IndexError` if any column doesn't exist
     # The behavior of returning a tuple is similar to `Hash#values_at`
-    def values_at(*columns : Int)
+    def values_at(*columns : Int32)
       columns.map { |column| self[column] }
     end
 

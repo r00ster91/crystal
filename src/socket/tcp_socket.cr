@@ -76,7 +76,7 @@ class TCPSocket < IPSocket
       getsockopt optname, 0, level: Protocol::TCP
     end
 
-    def tcp_keepalive_idle=(val : Int)
+    def tcp_keepalive_idle=(val : Int32)
       optname = {% if flag?(:darwin) %}
         LibC::TCP_KEEPALIVE
       {% else %}
@@ -91,7 +91,7 @@ class TCPSocket < IPSocket
       getsockopt LibC::TCP_KEEPINTVL, 0, level: Protocol::TCP
     end
 
-    def tcp_keepalive_interval=(val : Int)
+    def tcp_keepalive_interval=(val : Int32)
       setsockopt LibC::TCP_KEEPINTVL, val, level: Protocol::TCP
       val
     end
@@ -101,7 +101,7 @@ class TCPSocket < IPSocket
       getsockopt LibC::TCP_KEEPCNT, 0, level: Protocol::TCP
     end
 
-    def tcp_keepalive_count=(val : Int)
+    def tcp_keepalive_count=(val : Int32)
       setsockopt LibC::TCP_KEEPCNT, val, level: Protocol::TCP
       val
     end

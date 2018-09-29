@@ -98,7 +98,7 @@ struct Int
   # Raises if *other* is zero, or if *other* is -1 and
   # `self` is signed and is the minimum value for that
   # integer type.
-  def /(other : Int)
+  def /(other : Int32)
     check_div_argument other
 
     div = unsafe_div other
@@ -127,7 +127,7 @@ struct Int
   # Raises if *other* is `0`, or if *other* is `-1` and
   # `self` is signed and is the minimum value for that
   # integer type.
-  def tdiv(other : Int)
+  def tdiv(other : Int32)
     check_div_argument other
 
     unsafe_div other
@@ -154,7 +154,7 @@ struct Int
   # This uses floored division.
   #
   # See `Int#/` for more details.
-  def %(other : Int)
+  def %(other : Int32)
     if other == 0
       raise DivisionByZeroError.new
     elsif (self ^ other) >= 0
@@ -170,7 +170,7 @@ struct Int
   # This uses truncated division.
   #
   # See `Int#div` for more details.
-  def remainder(other : Int)
+  def remainder(other : Int32)
     if other == 0
       raise DivisionByZeroError.new
     else
@@ -192,7 +192,7 @@ struct Int
   #
   # -8000 >> 1 # => -4000
   # ```
-  def >>(count : Int)
+  def >>(count : Int32)
     if count < 0
       self << count.abs
     elsif count < sizeof(self) * 8
@@ -213,7 +213,7 @@ struct Int
   # 8000 << 32 # => 0
   # 8000 << -1 # => 4000
   # ```
-  def <<(count : Int)
+  def <<(count : Int32)
     if count < 0
       self >> count.abs
     elsif count < sizeof(self) * 8
@@ -253,7 +253,7 @@ struct Int
   # 2 ** 0  # => 1
   # 2 ** -1 # ArgumentError
   # ```
-  def **(exponent : Int) : self
+  def **(exponent : Int32) : self
     if exponent < 0
       raise ArgumentError.new "Cannot raise an integer to a negative integer power, use floats for that"
     end
@@ -307,11 +307,11 @@ struct Int
     (self & mask) == mask
   end
 
-  def gcd(other : Int)
+  def gcd(other : Int32)
     self == 0 ? other.abs : (other % self).gcd(self)
   end
 
-  def lcm(other : Int)
+  def lcm(other : Int32)
     (self * other).abs / gcd(other)
   end
 
@@ -410,7 +410,7 @@ struct Int
     to_s(10, io)
   end
 
-  def to_s(base : Int, upcase : Bool = false)
+  def to_s(base : Int32, upcase : Bool = false)
     raise ArgumentError.new("Invalid base #{base}") unless 2 <= base <= 36 || base == 62
     raise ArgumentError.new("upcase must be false for base 62") if upcase && base == 62
 
@@ -426,7 +426,7 @@ struct Int
     end
   end
 
-  def to_s(base : Int, io : IO, upcase : Bool = false)
+  def to_s(base : Int32, io : IO, upcase : Bool = false)
     raise ArgumentError.new("Invalid base #{base}") unless 2 <= base <= 36 || base == 62
     raise ArgumentError.new("upcase must be false for base 62") if upcase && base == 62
 

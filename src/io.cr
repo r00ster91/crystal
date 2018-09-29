@@ -442,7 +442,7 @@ abstract class IO
   # io.read_string(1) # => " "
   # io.read_string(6) # raises IO::EOFError
   # ```
-  def read_string(bytesize : Int) : String
+  def read_string(bytesize : Int32) : String
     String.new(bytesize) do |ptr|
       if decoder = decoder()
         read = decoder.read_utf8(self, Slice.new(ptr, bytesize))
@@ -587,7 +587,7 @@ abstract class IO
   # io.gets(3) # => "ld"
   # io.gets(3) # => nil
   # ```
-  def gets(limit : Int, chomp = false) : String?
+  def gets(limit : Int32, chomp = false) : String?
     gets '\n', limit: limit, chomp: chomp
   end
 
@@ -615,7 +615,7 @@ abstract class IO
   # io.gets('z', 10) # => "ld"
   # io.gets('w', 10) # => nil
   # ```
-  def gets(delimiter : Char, limit : Int, chomp = false) : String?
+  def gets(delimiter : Char, limit : Int32, chomp = false) : String?
     raise ArgumentError.new "Negative limit" if limit < 0
 
     ascii = delimiter.ascii?
@@ -823,7 +823,7 @@ abstract class IO
   # io.gets    # => "world"
   # io.skip(1) # raises IO::EOFError
   # ```
-  def skip(bytes_count : Int) : Nil
+  def skip(bytes_count : Int32) : Nil
     buffer = uninitialized UInt8[4096]
     while bytes_count > 0
       read_count = read(buffer.to_slice[0, Math.min(bytes_count, 4096)])
@@ -1147,7 +1147,7 @@ abstract class IO
   #
   # io2.to_s # => "hel"
   # ```
-  def self.copy(src, dst, limit : Int)
+  def self.copy(src, dst, limit : Int32)
     raise ArgumentError.new("Negative limit") if limit < 0
 
     buffer = uninitialized UInt8[4096]

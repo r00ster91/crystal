@@ -13,7 +13,7 @@ struct XML::Attributes
     props.null?
   end
 
-  def [](index : Int)
+  def [](index : Int32)
     size = self.size
 
     index += size if index < 0
