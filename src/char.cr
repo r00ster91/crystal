@@ -127,7 +127,7 @@ struct Char
   # 'z'.ascii_number?     # => false
   # 'z'.ascii_number?(36) # => true
   # ```
-  def ascii_number?(base : Int = 10)
+  def ascii_number?(base : Int32 = 10)
     !!to_i?(base)
   end
 
@@ -547,7 +547,7 @@ struct Char
   # 'f'.to_i(16) # => 15
   # 'z'.to_i(16) # raises ArgumentError
   # ```
-  def to_i(base : Int = 10) : Int32
+  def to_i(base : Int32 = 10) : Int32
     to_i?(base) || raise ArgumentError.new("Invalid integer: #{self}")
   end
 
@@ -563,7 +563,7 @@ struct Char
   # 'f'.to_i?(16) # => 15
   # 'z'.to_i?(16) # => nil
   # ```
-  def to_i?(base : Int = 10) : Int32?
+  def to_i?(base : Int32 = 10) : Int32?
     raise ArgumentError.new "Invalid base #{base}, expected 2 to 36" unless 2 <= base <= 36
 
     if base == 10
@@ -580,23 +580,23 @@ struct Char
   end
 
   # Same as `to_i`.
-  def to_i32(base : Int = 10) : Int32
+  def to_i32(base : Int32 = 10) : Int32
     to_i(base)
   end
 
   # Same as `to_i?`.
-  def to_i32?(base : Int = 10) : Int32?
+  def to_i32?(base : Int32 = 10) : Int32?
     to_i?(base)
   end
 
   {% for type in %w(i8 i16 i64 u8 u16 u32 u64) %}
     # See also: `to_i`.
-    def to_{{type.id}}(base : Int = 10)
+    def to_{{type.id}}(base : Int32 = 10)
       to_i(base).to_{{type.id}}
     end
 
     # See also: `to_i?`.
-    def to_{{type.id}}?(base : Int = 10)
+    def to_{{type.id}}?(base : Int32 = 10)
       to_i?(base).try &.to_{{type.id}}
     end
   {% end %}

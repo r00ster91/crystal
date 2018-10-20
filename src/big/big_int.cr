@@ -371,7 +371,7 @@ struct BigInt < Int
   # BigInt.new("123456789101101987654321").to_s(16) # => "1a249b1f61599cd7eab1"
   # BigInt.new("123456789101101987654321").to_s(36) # => "k3qmt029k48nmpd"
   # ```
-  def to_s(base : Int)
+  def to_s(base : Int32)
     raise "Invalid base #{base}" unless 2 <= base <= 36
     cstr = LibGMP.get_str(nil, base, self)
     String.new(cstr)

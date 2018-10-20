@@ -314,7 +314,7 @@ class String
   # "99 red balloons".to_i                # raises ArgumentError
   # "99 red balloons".to_i(strict: false) # => 99
   # ```
-  def to_i(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true)
+  def to_i(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true)
     to_i32(base, whitespace, underscore, prefix, strict)
   end
 
@@ -327,7 +327,7 @@ class String
   # "0a".to_i?(strict: false) # => 0
   # "hello".to_i?             # => nil
   # ```
-  def to_i?(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true)
+  def to_i?(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true)
     to_i32?(base, whitespace, underscore, prefix, strict)
   end
 
@@ -338,127 +338,127 @@ class String
   # "12345".to_i { 0 } # => 12345
   # "hello".to_i { 0 } # => 0
   # ```
-  def to_i(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
+  def to_i(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
     to_i32(base, whitespace, underscore, prefix, strict) { yield }
   end
 
   # Same as `#to_i` but returns an `Int8`.
-  def to_i8(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int8
+  def to_i8(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int8
     to_i8(base, whitespace, underscore, prefix, strict) { raise ArgumentError.new("Invalid Int8: #{self}") }
   end
 
   # Same as `#to_i` but returns an `Int8` or `nil`.
-  def to_i8?(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int8?
+  def to_i8?(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int8?
     to_i8(base, whitespace, underscore, prefix, strict) { nil }
   end
 
   # Same as `#to_i` but returns an `Int8` or the block's value.
-  def to_i8(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
+  def to_i8(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
     gen_to_ i8, 127, 128
   end
 
   # Same as `#to_i` but returns an `UInt8`.
-  def to_u8(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt8
+  def to_u8(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt8
     to_u8(base, whitespace, underscore, prefix, strict) { raise ArgumentError.new("Invalid UInt8: #{self}") }
   end
 
   # Same as `#to_i` but returns an `UInt8` or `nil`.
-  def to_u8?(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt8?
+  def to_u8?(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt8?
     to_u8(base, whitespace, underscore, prefix, strict) { nil }
   end
 
   # Same as `#to_i` but returns an `UInt8` or the block's value.
-  def to_u8(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
+  def to_u8(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
     gen_to_ u8, 255
   end
 
   # Same as `#to_i` but returns an `Int16`.
-  def to_i16(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int16
+  def to_i16(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int16
     to_i16(base, whitespace, underscore, prefix, strict) { raise ArgumentError.new("Invalid Int16: #{self}") }
   end
 
   # Same as `#to_i` but returns an `Int16` or `nil`.
-  def to_i16?(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int16?
+  def to_i16?(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int16?
     to_i16(base, whitespace, underscore, prefix, strict) { nil }
   end
 
   # Same as `#to_i` but returns an `Int16` or the block's value.
-  def to_i16(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
+  def to_i16(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
     gen_to_ i16, 32767, 32768
   end
 
   # Same as `#to_i` but returns an `UInt16`.
-  def to_u16(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt16
+  def to_u16(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt16
     to_u16(base, whitespace, underscore, prefix, strict) { raise ArgumentError.new("Invalid UInt16: #{self}") }
   end
 
   # Same as `#to_i` but returns an `UInt16` or `nil`.
-  def to_u16?(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt16?
+  def to_u16?(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt16?
     to_u16(base, whitespace, underscore, prefix, strict) { nil }
   end
 
   # Same as `#to_i` but returns an `UInt16` or the block's value.
-  def to_u16(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
+  def to_u16(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
     gen_to_ u16, 65535
   end
 
   # Same as `#to_i`.
-  def to_i32(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int32
+  def to_i32(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int32
     to_i32(base, whitespace, underscore, prefix, strict) { raise ArgumentError.new("Invalid Int32: #{self}") }
   end
 
   # Same as `#to_i`.
-  def to_i32?(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int32?
+  def to_i32?(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int32?
     to_i32(base, whitespace, underscore, prefix, strict) { nil }
   end
 
   # Same as `#to_i`.
-  def to_i32(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
+  def to_i32(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
     gen_to_ i32, 2147483647, 2147483648
   end
 
   # Same as `#to_i` but returns an `UInt32`.
-  def to_u32(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt32
+  def to_u32(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt32
     to_u32(base, whitespace, underscore, prefix, strict) { raise ArgumentError.new("Invalid UInt32: #{self}") }
   end
 
   # Same as `#to_i` but returns an `UInt32` or `nil`.
-  def to_u32?(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt32?
+  def to_u32?(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt32?
     to_u32(base, whitespace, underscore, prefix, strict) { nil }
   end
 
   # Same as `#to_i` but returns an `UInt32` or the block's value.
-  def to_u32(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
+  def to_u32(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
     gen_to_ u32, 4294967295
   end
 
   # Same as `#to_i` but returns an `Int64`.
-  def to_i64(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int64
+  def to_i64(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int64
     to_i64(base, whitespace, underscore, prefix, strict) { raise ArgumentError.new("Invalid Int64: #{self}") }
   end
 
   # Same as `#to_i` but returns an `Int64` or `nil`.
-  def to_i64?(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int64?
+  def to_i64?(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : Int64?
     to_i64(base, whitespace, underscore, prefix, strict) { nil }
   end
 
   # Same as `#to_i` but returns an `Int64` or the block's value.
-  def to_i64(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
+  def to_i64(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
     gen_to_ i64, 9223372036854775807, 9223372036854775808
   end
 
   # Same as `#to_i` but returns an `UInt64`.
-  def to_u64(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt64
+  def to_u64(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt64
     to_u64(base, whitespace, underscore, prefix, strict) { raise ArgumentError.new("Invalid UInt64: #{self}") }
   end
 
   # Same as `#to_i` but returns an `UInt64` or `nil`.
-  def to_u64?(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt64?
+  def to_u64?(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true) : UInt64?
     to_u64(base, whitespace, underscore, prefix, strict) { nil }
   end
 
   # Same as `#to_i` but returns an `UInt64` or the block's value.
-  def to_u64(base : Int = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
+  def to_u64(base : Int32 = 10, whitespace = true, underscore = false, prefix = false, strict = true, &block)
     gen_to_ u64
   end
 
