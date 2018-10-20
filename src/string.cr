@@ -230,7 +230,7 @@ class String
   # end
   # str # => "ab"
   # ```
-  def self.new(capacity : Int32)
+  def self.new(capacity : Int)
     check_capacity_in_bounds(capacity)
 
     str = GC.malloc_atomic(capacity.to_u32 + HEADER_SIZE + 1).as(UInt8*)
@@ -713,7 +713,7 @@ class String
   # "hello"[-2] # 'l'
   # "hello"[5]  # raises IndexError
   # ```
-  def [](index : Int32)
+  def [](index : Int)
     at(index) { raise IndexError.new }
   end
 
@@ -742,7 +742,7 @@ class String
   # Raises `IndexError` if *start* isn't in range.
   #
   # Raises `ArgumentError` if *count* is negative.
-  def [](start : Int32, count : Int32)
+  def [](start : Int, count : Int)
     if ascii_only?
       return byte_slice(start, count)
     end
@@ -819,11 +819,11 @@ class String
     self[regex, group]?.not_nil!
   end
 
-  def at(index : Int32)
+  def at(index : Int)
     at(index) { raise IndexError.new }
   end
 
-  def at(index : Int32)
+  def at(index : Int)
     if ascii_only?
       byte = byte_at?(index)
       if byte
@@ -2848,7 +2848,7 @@ class String
     {pre, mid, post}
   end
 
-  def byte_index(byte : Int32, offset = 0)
+  def byte_index(byte : Int, offset = 0)
     offset.upto(bytesize - 1) do |i|
       if to_unsafe[i] == byte
         return i

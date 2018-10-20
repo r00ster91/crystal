@@ -60,7 +60,7 @@ module GC
     malloc(LibC::SizeT.new(size))
   end
 
-  def self.malloc_atomic(size : Int32)
+  def self.malloc_atomic(size : Int)
     malloc_atomic(LibC::SizeT.new(size))
   end
 

@@ -23,7 +23,7 @@ module Indexable(T)
   # This method should only be directly invoked if you are absolutely
   # sure the index is in bounds, to avoid a bounds check for a small boost
   # of performance.
-  abstract def unsafe_at(index : Int32)
+  abstract def unsafe_at(index : Int)
 
   # Returns the element at the given *index*, if in bounds,
   # otherwise executes the given block and returns its value.
@@ -33,7 +33,7 @@ module Indexable(T)
   # a.at(0) { :baz } # => :foo
   # a.at(2) { :baz } # => :baz
   # ```
-  def at(index : Int32)
+  def at(index : Int)
     index = check_index_out_of_bounds(index) do
       return yield
     end
@@ -49,7 +49,7 @@ module Indexable(T)
   # a.at(2) # raises IndexError
   # ```
   @[AlwaysInline]
-  def at(index : Int32)
+  def at(index : Int)
     at(index) { raise IndexError.new }
   end
 
@@ -69,7 +69,7 @@ module Indexable(T)
   # ary[-4] # raises IndexError
   # ```
   @[AlwaysInline]
-  def [](index : Int32)
+  def [](index : Int)
     at(index)
   end
 
@@ -89,7 +89,7 @@ module Indexable(T)
   # ary[-4]? # nil
   # ```
   @[AlwaysInline]
-  def []?(index : Int32)
+  def []?(index : Int)
     at(index) { nil }
   end
 

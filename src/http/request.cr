@@ -50,7 +50,7 @@ class HTTP::Request
     @method == "HEAD"
   end
 
-  def content_length=(length : Int32)
+  def content_length=(length : Int)
     headers["Content-Length"] = length.to_s
   end
 

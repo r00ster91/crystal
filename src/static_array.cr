@@ -130,7 +130,7 @@ struct StaticArray(T, N)
   # array[4] = 4                                    # raises IndexError
   # ```
   @[AlwaysInline]
-  def []=(index : Int32, value : T)
+  def []=(index : Int, value : T)
     index = check_index_out_of_bounds index
     to_unsafe[index] = value
   end

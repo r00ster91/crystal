@@ -74,7 +74,7 @@ class Array(T)
   # ary = Array(Int32).new(5)
   # ary.size # => 0
   # ```
-  def initialize(initial_capacity : Int32)
+  def initialize(initial_capacity : Int)
     if initial_capacity < 0
       raise ArgumentError.new("Negative array size: #{initial_capacity}")
     end
@@ -98,7 +98,7 @@ class Array(T)
   # ary[0][0] = 2
   # ary # => [[2], [2], [2]]
   # ```
-  def initialize(size : Int32, value : T)
+  def initialize(size : Int, value : T)
     if size < 0
       raise ArgumentError.new("Negative array size: #{size}")
     end
@@ -124,7 +124,7 @@ class Array(T)
   # ary[0][0] = 2
   # ary # => [[2], [1], [1]]
   # ```
-  def self.new(size : Int32, &block : Int32 -> T)
+  def self.new(size : Int, &block : Int32 -> T)
     Array(T).build(size) do |buffer|
       size.to_i.times do |i|
         buffer[i] = yield i
@@ -144,7 +144,7 @@ class Array(T)
   #   LibSome.fill_buffer_and_return_number_of_elements_filled(buffer)
   # end
   # ```
-  def self.build(capacity : Int32) : self
+  def self.build(capacity : Int) : self
     ary = Array(T).new(capacity)
     ary.size = (yield ary.to_unsafe).to_i
     ary
@@ -496,7 +496,7 @@ class Array(T)
   end
 
   @[AlwaysInline]
-  def unsafe_at(index : Int32)
+  def unsafe_at(index : Int)
     @buffer[index]
   end
 

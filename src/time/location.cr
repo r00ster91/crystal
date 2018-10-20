@@ -389,7 +389,7 @@ class Time::Location
   #
   # *epoch* expresses the number of seconds since UNIX epoch
   # (`1970-01-01 00:00:00 UTC`).
-  def lookup(epoch : Int32) : Zone
+  def lookup(epoch : Int) : Zone
     unless @cached_range[0] <= epoch < @cached_range[1]
       @cached_zone, @cached_range = lookup_with_boundaries(epoch)
     end
@@ -398,7 +398,7 @@ class Time::Location
   end
 
   # :nodoc:
-  def lookup_with_boundaries(epoch : Int32) : {Zone, {Int64, Int64}}
+  def lookup_with_boundaries(epoch : Int) : {Zone, {Int64, Int64}}
     case
     when zones.empty?
       return Zone::UTC, {Int64::MIN, Int64::MAX}

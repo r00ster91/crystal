@@ -77,7 +77,7 @@ struct Pointer(T)
   # ptr2 = ptr + 1
   # ptr2.address # => 1238
   # ```
-  def +(other : Int32)
+  def +(other : Int)
     self + other.to_i64
   end
 
@@ -147,12 +147,12 @@ struct Pointer(T)
   # ptr1[2] # => 3
   # ptr1[3] # => 4
   # ```
-  def copy_from(source : Pointer(T), count : Int32)
+  def copy_from(source : Pointer(T), count : Int)
     source.copy_to(self, count)
   end
 
   # :nodoc:
-  def copy_from(source : Pointer(NoReturn), count : Int32)
+  def copy_from(source : Pointer(NoReturn), count : Int)
     raise ArgumentError.new("Negative count") if count < 0
 
     # We need this overload for cases when we have a pointer to unreachable
@@ -178,7 +178,7 @@ struct Pointer(T)
   # ptr2[2] # => 13
   # ptr2[3] # => 14
   # ```
-  def copy_to(target : Pointer, count : Int32)
+  def copy_to(target : Pointer, count : Int)
     target.copy_from_impl(self, count)
   end
 
@@ -238,7 +238,7 @@ struct Pointer(T)
   # copy_from/move_from/copy_to/move_to reverse self and caller,
   # and so if either self or the arguments are unions a dispatch
   # will happen and unions will disappear.
-  protected def copy_from_impl(source : Pointer(T), count : Int32)
+  protected def copy_from_impl(source : Pointer(T), count : Int)
     raise ArgumentError.new("Negative count") if count < 0
 
     if self.class == source.class
@@ -344,7 +344,7 @@ struct Pointer(T)
   # ptr = ptr.realloc(8)
   # ptr # [1, 2, 3, 4, 0, 0, 0, 0]
   # ```
-  def realloc(size : Int32)
+  def realloc(size : Int)
     if size < 0
       raise ArgumentError.new("Negative size")
     end
@@ -428,7 +428,7 @@ struct Pointer(T)
   # # ...
   # ptr[9] # => 0
   # ```
-  def self.malloc(size : Int32 = 1)
+  def self.malloc(size : Int = 1)
     if size < 0
       raise ArgumentError.new("Negative Pointer#malloc size")
     end
@@ -448,7 +448,7 @@ struct Pointer(T)
   # ptr[0] # => 42
   # ptr[1] # => 42
   # ```
-  def self.malloc(size : Int32, value : T)
+  def self.malloc(size : Int, value : T)
     ptr = Pointer(T).malloc(size)
     size.times { |i| ptr[i] = value }
     ptr

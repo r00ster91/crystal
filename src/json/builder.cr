@@ -73,7 +73,7 @@ class JSON::Builder
   end
 
   # Writes an integer.
-  def number(number : Int32)
+  def number(number : Int)
     scalar do
       @io << number
     end

@@ -440,7 +440,7 @@ struct Time
   #
   # Since UTC does not have any time zone transitions, each date-time is
   # unambiguously resolved.
-  def self.utc(year : Int32, month : Int32, day : Int32, hour : Int32 = 0, minute : Int32 = 0, second : Int32 = 0, *, nanosecond : Int32 = 0) : Time
+  def self.utc(year : Int32, month : Int32, day : Int32, hour : Int32 = 0, minute : Int32 = 0, second : Int32 = 0, *, nanosecond : Int = 0) : Time
     new(year, month, day, hour, minute, second, nanosecond: nanosecond, location: Location::UTC)
   end
 
@@ -466,7 +466,7 @@ struct Time
   #
   # Valid range for *seconds* is `0..315_537_897_599`.
   # For *nanoseconds* it is `0..999_999_999`.
-  def self.utc(*, seconds : Int64, nanoseconds : Int32) : Time
+  def self.utc(*, seconds : Int64, nanoseconds : Int) : Time
     new(seconds: seconds, nanoseconds: nanoseconds, location: Location::UTC)
   end
 
@@ -487,7 +487,7 @@ struct Time
   # ```
   # Time.epoch(981173106) # => 2001-02-03 04:05:06 UTC
   # ```
-  def self.epoch(seconds : Int32) : Time
+  def self.epoch(seconds : Int) : Time
     utc(seconds: UNIX_SECONDS + seconds, nanoseconds: 0)
   end
 
@@ -500,7 +500,7 @@ struct Time
   # time = Time.epoch_ms(981173106789) # => 2001-02-03 04:05:06.789 UTC
   # time.millisecond                   # => 789
   # ```
-  def self.epoch_ms(milliseconds : Int32) : Time
+  def self.epoch_ms(milliseconds : Int) : Time
     milliseconds = milliseconds.to_i64
     seconds = UNIX_SECONDS + (milliseconds / 1_000)
     nanoseconds = (milliseconds % 1000) * NANOSECONDS_PER_MILLISECOND
@@ -620,7 +620,7 @@ struct Time
   # There is no explicit limit on the input values but the addition must result
   # in a valid time between `0001-01-01 00:00:00.0` and
   # `9999-12-31 23:59:59.999_999_999`. Otherwise `ArgumentError` is raised.
-  def add_span(seconds : Int32, nanoseconds : Int32) : Time
+  def add_span(seconds : Int, nanoseconds : Int) : Time
     if seconds == 0 && nanoseconds == 0
       return self
     end

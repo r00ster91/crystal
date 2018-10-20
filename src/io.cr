@@ -442,7 +442,7 @@ abstract class IO
   # io.read_string(1) # => " "
   # io.read_string(6) # raises IO::EOFError
   # ```
-  def read_string(bytesize : Int32) : String
+  def read_string(bytesize : Int) : String
     String.new(bytesize) do |ptr|
       if decoder = decoder()
         read = decoder.read_utf8(self, Slice.new(ptr, bytesize))
@@ -823,7 +823,7 @@ abstract class IO
   # io.gets    # => "world"
   # io.skip(1) # raises IO::EOFError
   # ```
-  def skip(bytes_count : Int32) : Nil
+  def skip(bytes_count : Int) : Nil
     buffer = uninitialized UInt8[4096]
     while bytes_count > 0
       read_count = read(buffer.to_slice[0, Math.min(bytes_count, 4096)])
