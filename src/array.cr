@@ -890,7 +890,7 @@ class Array(T)
   # Modifies `self`, keeping only the elements in the collection for which the
   # passed block returns `true`. Returns `self`.
   #
-  # See also: `Array#select`.
+  # See also: `Enumerable#select`.
   def select!
     reject! { |elem| !yield(elem) }
   end
@@ -898,7 +898,7 @@ class Array(T)
   # Modifies `self`, deleting the elements in the collection for which the
   # passed block returns `true`. Returns `self`.
   #
-  # See also: `Array#reject`.
+  # See also: `Enumerable#reject`.
   def reject!
     internal_delete { |e| yield e }
     self
