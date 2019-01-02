@@ -1,5 +1,5 @@
 require "spec"
-require "string_scanner"
+require "../../src/string_scanner"
 
 describe StringScanner, "#scan" do
   it "returns the string matched and advances the offset" do
@@ -8,6 +8,13 @@ describe StringScanner, "#scan" do
     s.scan(/\w+\s/).should eq("is ")
     s.scan(/\w+\s/).should eq("a ")
     s.scan(/\w+/).should eq("string")
+
+    s.reset
+
+    s.scan("this ").should eq("this ")
+    s.scan("is ").should eq("is ")
+    s.scan("a ").should eq("a ")
+    s.scan("string").should eq("string")
   end
 
   it "returns nil if it can't match from the offset" do
@@ -16,6 +23,13 @@ describe StringScanner, "#scan" do
     s.scan(/\w+/).should be_nil
     s.scan(/\s\w+/).should_not be_nil # => " string"
     s.scan(/.*/).should_not be_nil    # => ""
+
+    s.reset
+
+    s.scan("test").should_not be_nil # => "test"
+    s.scan("hi").should be_nil
+    s.scan(" string").should_not be_nil # => " string"
+    s.scan("").should_not be_nil        # => ""
   end
 end
 
@@ -25,12 +39,23 @@ describe StringScanner, "#scan_until" do
     s.scan_until(/tr/).should eq("test str")
     s.offset.should eq(8)
     s.scan_until(/g/).should eq("ing")
+
+    s.reset
+
+    s.scan_until("tr").should eq("test str")
+    s.offset.should eq(8)
+    s.scan_until('g').should eq("ing")
   end
 
   it "returns nil if it can't match from the offset" do
     s = StringScanner.new("test string")
     s.offset = 8
     s.scan_until(/tr/).should be_nil
+
+    s.reset
+
+    s.offset = 8
+    s.scan_until("tr").should be_nil
   end
 end
 
@@ -53,6 +78,24 @@ describe StringScanner, "#skip" do
 
     s.skip(/\w+/).should eq(6)
     s.offset.should eq(16)
+
+    s.reset
+
+    s.skip("this ").should eq(5)
+    s.offset.should eq(5)
+    s[0]?.should be_nil
+
+    s.skip("123").should eq(nil)
+    s.offset.should eq(5)
+
+    s.skip("is ").should eq(3)
+    s.offset.should eq(8)
+
+    s.skip("a ").should eq(2)
+    s.offset.should eq(10)
+
+    s.skip("string").should eq(6)
+    s.offset.should eq(16)
   end
 end
 
@@ -70,6 +113,19 @@ describe StringScanner, "#skip_until" do
 
     s.skip_until(/ng/).should eq(6)
     s.offset.should eq(16)
+
+    s.reset
+
+    s.skip_until("not").should eq(nil)
+    s.offset.should eq(0)
+    s[0]?.should be_nil
+
+    s.skip_until("a ").should eq(10)
+    s.offset.should eq(10)
+    s[0]?.should be_nil
+
+    s.skip_until("ng").should eq(6)
+    s.offset.should eq(16)
   end
 end
 
@@ -78,6 +134,11 @@ describe StringScanner, "#eos" do
     s = StringScanner.new("this is a string")
     s.eos?.should eq(false)
     s.skip(/(\w+\s?){4}/)
+    s.eos?.should eq(true)
+
+    s.reset
+    s.eos?.should eq(false)
+    s.skip(s.string)
     s.eos?.should eq(true)
   end
 end
@@ -91,11 +152,21 @@ describe StringScanner, "#check" do
     s.offset.should eq(5)
     s.check(/\w+\s/).should eq("is ")
     s.offset.should eq(5)
+
+    s.reset
+    s.offset = 5
+
+    s.check("is ").should eq("is ")
+    s.offset.should eq(5)
+    s.check("is ").should eq("is ")
+    s.offset.should eq(5)
   end
 
   it "returns nil if it can't match from the offset" do
     s = StringScanner.new("test string")
     s.check(/\d+/).should be_nil
+
+    s.check("123").should be_nil
   end
 end
 
@@ -106,12 +177,21 @@ describe StringScanner, "#check_until" do
     s.offset.should eq(0)
     s.check_until(/g/).should eq("test string")
     s.offset.should eq(0)
+
+    s.reset
+
+    s.check_until("tr").should eq("test str")
+    s.offset.should eq(0)
+    s.check_until('g').should eq("test string")
+    s.offset.should eq(0)
   end
 
   it "returns nil if it can't match from the offset" do
     s = StringScanner.new("test string")
     s.offset = 8
     s.check_until(/tr/).should be_nil
+
+    s.check_until("tr").should be_nil
   end
 end
 
@@ -124,6 +204,16 @@ describe StringScanner, "#rest" do
     s.rest.should eq("string")
 
     s.scan(/string/)
+    s.rest.should eq("")
+
+    s.reset
+
+    s.rest.should eq("this is a string")
+
+    s.scan("this is a ")
+    s.rest.should eq("string")
+
+    s.scan("string")
     s.rest.should eq("")
   end
 end
@@ -146,7 +236,7 @@ describe StringScanner, "#[]" do
     s = StringScanner.new("Fri Dec 12 1975 14:39")
     s.scan(/this is not there/)
 
-    expect_raises(Exception, "Nil assertion failed") { s[0] }
+    expect_raises(IndexError, "There is no last match") { s[0] }
   end
 
   it "raises when there is no subgroup" do
@@ -156,7 +246,7 @@ describe StringScanner, "#[]" do
 
     s[0].should_not be_nil
     expect_raises(IndexError) { s[5] }
-    expect_raises(KeyError, "Capture group 'something' does not exist") { s["something"] }
+    expect_raises(IndexError, "Last match has no subgroup 'something'") { s["something"] }
   end
 end
 
@@ -219,7 +309,7 @@ describe StringScanner, "#offset=" do
 end
 
 describe StringScanner, "#inspect" do
-  it "has information on the scanner" do
+  it "has information about the scanner" do
     s = StringScanner.new("this is a string")
     s.inspect.should eq(%(#<StringScanner 0/16 "this " >))
     s.scan(/\w+\s/)

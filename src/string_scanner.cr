@@ -59,7 +59,7 @@
 # * `#inspect`
 # * `#string`
 class StringScanner
-  @last_match : Regex::MatchData?
+  @last_match : Regex::MatchData? | String? | Char?
 
   def initialize(@str : String)
     @byte_offset = 0
@@ -105,12 +105,44 @@ class StringScanner
     match(pattern, advance: true, options: Regex::Options::None)
   end
 
-  private def match(pattern, advance = true, options = Regex::Options::ANCHORED)
+  private def match(pattern : Regex, advance = true, options = Regex::Options::ANCHORED)
     match = pattern.match_at_byte_index(@str, @byte_offset, options)
     @last_match = match
     if match
       start = @byte_offset
       new_byte_offset = match.byte_end(0).to_i
+      @byte_offset = new_byte_offset if advance
+
+      @str.byte_slice(start, new_byte_offset - start)
+    else
+      nil
+    end
+  end
+
+  private def match(pattern : String, advance = true, options = nil)
+    match = @str.index(pattern, @byte_offset) ? pattern : nil
+    @last_match = match
+    if match
+      start = @byte_offset
+      if options.none?
+        new_byte_offset = @str.size - pattern.size
+      else
+        new_byte_offset = pattern.size + start
+      end
+      @byte_offset = new_byte_offset if advance
+
+      @str.byte_slice(start, new_byte_offset - start)
+    else
+      nil
+    end
+  end
+
+  private def match(pattern : Char, advance = true, options = nil)
+    match = @str.index(pattern, @byte_offset) ? pattern : nil
+    @last_match = match
+    if match
+      start = @byte_offset
+      new_byte_offset = start + 1
       @byte_offset = new_byte_offset if advance
 
       @str.byte_slice(start, new_byte_offset - start)
@@ -176,7 +208,7 @@ class StringScanner
 
   # Returns the *n*-th subgroup in the most recent match.
   #
-  # Raises an exception if there was no last match or if there is no subgroup.
+  # Raises `IndexError` if the last match is a string or char or if there was no last match or if there is no subgroup.
   #
   # ```
   # s = StringScanner.new("Fri Dec 12 1975 14:39")
@@ -191,12 +223,23 @@ class StringScanner
   # s["day"]      # => "12"
   # ```
   def [](n)
-    @last_match.not_nil![n]
+    unless subgroup = self.[n]?
+      if @last_match
+        if @last_match.is_a?(Regex::MatchData)
+          raise IndexError.new("Last match has no subgroup '#{n}'")
+        else
+          raise IndexError.new("Cannot get subgroup '#{n}' from last match (it's a #{@last_match.class}, not a regex match)")
+        end
+      else
+        raise IndexError.new("There is no last match")
+      end
+    end
+    subgroup
   end
 
   # Returns the nilable *n*-th subgroup in the most recent match.
   #
-  # Returns `nil` if there was no last match or if there is no subgroup.
+  # Returns `nil` if the last match is a string or char or if there was no last match or if there is no subgroup.
   #
   # ```
   # s = StringScanner.new("Fri Dec 12 1975 14:39")
@@ -215,7 +258,9 @@ class StringScanner
   # s[0]?          # => nil
   # ```
   def []?(n)
-    @last_match.try(&.[n]?)
+    if match = @last_match.as?(Regex::MatchData)
+      match.try(&.[n]?)
+    end
   end
 
   # Returns `true` if the scan offset is at the end of the string.
